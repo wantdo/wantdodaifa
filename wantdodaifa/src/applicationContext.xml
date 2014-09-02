@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"></property>
+		<property name="url" value="jdbc:sqlserver://localhost:1433;"></property>
+		<property name="username" value="sa"></property>
+		<property name="password" value="123456"></property>
+	</bean>
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.SQLServerDialect
+				</prop>
+			</props>
+		</property>
+		<property name="mappingResources">
+			<list>
+				<value>com/wantdo/pojo/OrderJd.hbm.xml</value>
+				<value>com/wantdo/pojo/Goods.hbm.xml</value>
+				<value>com/wantdo/pojo/FlowSource.hbm.xml</value>
+				<value>com/wantdo/pojo/Flow.hbm.xml</value>
+				<value>com/wantdo/pojo/Sale.hbm.xml</value></list>
+		</property></bean>
+	<bean id="OrderJdDAO" class="com.wantdo.dao.impl.OrderJdDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="GoodsDAO" class="com.wantdo.dao.impl.GoodsDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="FlowSourceDAO" class="com.wantdo.dao.impl.FlowSourceDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="FlowDAO" class="com.wantdo.dao.impl.FlowDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="SaleDAO" class="com.wantdo.dao.impl.SaleDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="JDZQAction" class="com.wantdo.action.JDZQAction" scope="prototype">
+		<property name="saleService">
+			<ref bean="SaleService"/>
+		</property> 
+		<property name="goodsService">
+			<ref bean="GoodsService"/>
+		</property> 
+		<property name="flowService">
+			<ref bean="FlowService"/>
+		</property> 
+		<property name="flowSourceService">
+			<ref bean="FlowSourceService"/>
+		</property> 
+	</bean>
+	<bean id="SaleService"
+		class="com.wantdo.service.impl.SaleService">
+		<property name="saleDAO">
+			<ref bean="SaleDAO" />
+		</property>
+	</bean>
+	<bean id="GoodsService"
+		class="com.wantdo.service.impl.GoodsService">
+		<property name="goodsDAO">
+			<ref bean="GoodsDAO" />
+		</property>
+	</bean>
+	<bean id="FlowService"
+		class="com.wantdo.service.impl.FlowService">
+		<property name="flowDAO">
+			<ref bean="FlowDAO" />
+		</property>
+	</bean>
+	<bean id="FlowSourceService"
+		class="com.wantdo.service.impl.FlowSourceService">
+		<property name="flowSourceDAO">
+			<ref bean="FlowSourceDAO" />
+		</property>
+	</bean>
+	
+	</beans>
