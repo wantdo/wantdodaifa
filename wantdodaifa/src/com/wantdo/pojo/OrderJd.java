@@ -1,5 +1,7 @@
 package com.wantdo.pojo;
 
+import java.sql.Timestamp;
+
 /**
  * OrderJd entity. @author MyEclipse Persistence Tools
  */
@@ -19,7 +21,8 @@ public class OrderJd implements java.io.Serializable {
 	private String discountCost;
 	private String orderNum;
 	private String orderPrice;
-	private String gettime;
+	private Timestamp gettime;
+	private String version;
 
 	// Constructors
 
@@ -31,7 +34,7 @@ public class OrderJd implements java.io.Serializable {
 	public OrderJd(String name, String address, String phone, String orderId,
 			String orderNo, String goodinfo, String primeCost,
 			String discountCost, String orderNum, String orderPrice,
-			String gettime) {
+			Timestamp gettime, String version) {
 		this.name = name;
 		this.address = address;
 		this.phone = phone;
@@ -43,6 +46,7 @@ public class OrderJd implements java.io.Serializable {
 		this.orderNum = orderNum;
 		this.orderPrice = orderPrice;
 		this.gettime = gettime;
+		this.version = version;
 	}
 
 	// Property accessors
@@ -135,12 +139,20 @@ public class OrderJd implements java.io.Serializable {
 		this.orderPrice = orderPrice;
 	}
 
-	public String getGettime() {
+	public Timestamp getGettime() {
 		return this.gettime;
 	}
 
-	public void setGettime(String gettime) {
+	public void setGettime(Timestamp gettime) {
 		this.gettime = gettime;
+	}
+
+	public String getVersion() {
+		return this.version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
 	}
 
 }

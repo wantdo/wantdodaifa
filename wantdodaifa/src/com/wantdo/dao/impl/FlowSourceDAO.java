@@ -1,6 +1,10 @@
 package com.wantdo.dao.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+
 import org.hibernate.LockMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +14,6 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import com.alibaba.fastjson.JSON;
 import com.wantdo.dao.IFlowSourceDAO;
 import com.wantdo.pojo.FlowSource;
-import com.wantdo.pojo.Sale;
 
 /**
  * A data access object (DAO) providing persistence and search support for
@@ -23,7 +26,7 @@ import com.wantdo.pojo.Sale;
  * @see com.wantdo.pojo.FlowSource
  * @author MyEclipse Persistence Tools
  */
-public class FlowSourceDAO extends HibernateDaoSupport implements IFlowSourceDAO{
+public class FlowSourceDAO extends HibernateDaoSupport  implements IFlowSourceDAO{
 	private static final Logger log = LoggerFactory
 			.getLogger(FlowSourceDAO.class);
 	// property constants
@@ -32,10 +35,9 @@ public class FlowSourceDAO extends HibernateDaoSupport implements IFlowSourceDAO
 	public static final String LAND_PAGE_VIEW_ACCOUNTED = "landPageViewAccounted";
 	public static final String PAGE_VIEW = "pageView";
 	public static final String PAGE_VIEW_ACCOUNTED = "pageViewAccounted";
-	public static final String FLOW_SOURCE_TIME = "flowSourceTime";
-	public static final String NOW_TIME = "nowTime";
 	public static final String SHOP_NAME = "shopName";
 	public static final String PLATFORM = "platform";
+	public static final String VERSION = "version";
 
 	protected void initDao() {
 		// do nothing
@@ -121,20 +123,16 @@ public class FlowSourceDAO extends HibernateDaoSupport implements IFlowSourceDAO
 		return findByProperty(PAGE_VIEW_ACCOUNTED, pageViewAccounted);
 	}
 
-	public List findByFlowSourceTime(Object flowSourceTime) {
-		return findByProperty(FLOW_SOURCE_TIME, flowSourceTime);
-	}
-
-	public List findByNowTime(Object nowTime) {
-		return findByProperty(NOW_TIME, nowTime);
-	}
-
 	public List findByShopName(Object shopName) {
 		return findByProperty(SHOP_NAME, shopName);
 	}
 
 	public List findByPlatform(Object platform) {
 		return findByProperty(PLATFORM, platform);
+	}
+
+	public List findByVersion(Object version) {
+		return findByProperty(VERSION, version);
 	}
 
 	public List findAll() {
@@ -186,10 +184,38 @@ public class FlowSourceDAO extends HibernateDaoSupport implements IFlowSourceDAO
 	public static FlowSourceDAO getFromApplicationContext(ApplicationContext ctx) {
 		return (FlowSourceDAO) ctx.getBean("FlowSourceDAO");
 	}
-
 	@Override
-	public List<FlowSource> getSale(String json) {
+	public List<FlowSource> getData(String json) {
 		List<FlowSource> flowSources = JSON.parseArray(json, FlowSource.class);
 		return flowSources;
+	}
+
+	@Override
+	public List<FlowSource> findbyTimeAndName(Date flowSourceTime, String shopName,
+			String flowSource) {
+		log.debug("finding all FlowSource instances");
+		try {
+			String queryString = "from FlowSource as fs where fs.flowSourceTime=? and shopName=?and flowSource=?";
+			return getHibernateTemplate().find(queryString, new Object[]{flowSourceTime, shopName, flowSource});
+			
+		} catch (RuntimeException re) {
+			log.error("find all failed", re);
+			throw re;
+		}
+	}
+
+	@Override
+	public List<FlowSource> getByOpDate(String startTime, String endTime) throws Exception {
+		log.debug("finding FlowSource instance with startTime: " + startTime+" and endTime:"+endTime);
+		try {
+			SimpleDateFormat sdf=new SimpleDateFormat("yy-MM-dd");
+			String queryString="from FlowSource as model where model.flowSourceTime " +
+					"between ? and ? order by model.flowSourceTime asc";
+			return getHibernateTemplate().find(queryString, new Object[]{sdf.parse(startTime),sdf.parse(endTime)});
+		} catch (RuntimeException re) {
+			// TODO: handle exception
+			log.error("find by startTime and endTime failed", re);
+			throw re;
+		}
 	}
 }

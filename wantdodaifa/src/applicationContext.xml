@@ -11,10 +11,10 @@
 		<property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"></property>
 		<property name="url" value="jdbc:sqlserver://localhost:1433;"></property>
 		<property name="username" value="sa"></property>
-		<property name="password" value="123456"></property>
+		<property name="password" value="wantdo123"></property>
 	</bean>
 	<bean id="sessionFactory"
-		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
 		<property name="dataSource">
 			<ref bean="dataSource" />
 		</property>
@@ -23,6 +23,7 @@
 				<prop key="hibernate.dialect">
 					org.hibernate.dialect.SQLServerDialect
 				</prop>
+				<!-- <prop key="hibernate.show_sql">true</prop> -->
 			</props>
 		</property>
 		<property name="mappingResources">
@@ -31,7 +32,11 @@
 				<value>com/wantdo/pojo/Goods.hbm.xml</value>
 				<value>com/wantdo/pojo/FlowSource.hbm.xml</value>
 				<value>com/wantdo/pojo/Flow.hbm.xml</value>
-				<value>com/wantdo/pojo/Sale.hbm.xml</value></list>
+				<value>com/wantdo/pojo/Sale.hbm.xml</value>
+				<value>com/wantdo/pojo/TimeSale.hbm.xml</value>
+				<value>com/wantdo/pojo/CusShops.hbm.xml</value>
+				<value>com/wantdo/pojo/WspShops.hbm.xml</value>
+				<value>com/wantdo/pojo/OrderSale.hbm.xml</value></list>
 		</property></bean>
 	<bean id="OrderJdDAO" class="com.wantdo.dao.impl.OrderJdDAO">
 		<property name="sessionFactory">
@@ -58,9 +63,32 @@
 			<ref bean="sessionFactory" />
 		</property>
 	</bean>
-	<bean id="JDZQAction" class="com.wantdo.action.JDZQAction" scope="prototype">
+	<bean id="OrderSaleDAO" class="com.wantdo.dao.impl.OrderSaleDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="TimeSaleDAO" class="com.wantdo.dao.impl.TimeSaleDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="CusShopsDAO" class="com.wantdo.dao.impl.CusShopsDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="WspShopsDAO" class="com.wantdo.dao.impl.WspShopsDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="ZQAction" class="com.wantdo.action.ZQAction" scope="prototype">
 		<property name="saleService">
 			<ref bean="SaleService"/>
+		</property> 
+		<property name="orderSaleService">
+			<ref bean="OrderSaleService"/>
 		</property> 
 		<property name="goodsService">
 			<ref bean="GoodsService"/>
@@ -71,11 +99,102 @@
 		<property name="flowSourceService">
 			<ref bean="FlowSourceService"/>
 		</property> 
+		<property name="timeSaleService">
+			<ref bean="TimeSaleService"/>
+		</property> 
+		<property name="cusShopsService">
+			<ref bean="CusShopsService"/>
+		</property>
+		<property name="wspShopsService">
+			<ref bean="WspShopsService"/>
+		</property>
+	</bean>
+	<bean id="OrderSaleAction" class="com.wantdo.action.OrderSaleAction" scope="prototype">
+		<property name="orderSaleService">
+			<ref bean="OrderSaleService"/>
+		</property> 
+	</bean>
+	<bean id="JDDFAction" class="com.wantdo.action.JDDFAction" scope="prototype">
+		<property name="orderJdService">
+			<ref bean="OrderJdService"/>
+		</property> 
+	</bean>
+	<bean id="FsProcessedAction" class="com.wantdo.action.FsProcessedAction" scope="prototype">
+		<property name="flowSourceService">
+			<ref bean="FlowSourceService"/>
+		</property>
+	</bean>
+	<bean id="FProcessedAction" class="com.wantdo.action.FProcessedAction" scope="prototype">
+		<property name="flowService">
+			<ref bean="FlowService"/>
+		</property>
+	</bean>
+	<bean id="SProcessedAction" class="com.wantdo.action.SProcessedAction" scope="prototype">
+		<property name="saleService">
+			<ref bean="SaleService"/>
+		</property> 
+	</bean>
+	<bean id="GProcessedAction" class="com.wantdo.action.GProcessedAction" scope="prototype">
+		<property name="goodsService">
+			<ref bean="GoodsService"/>
+		</property> 
+	</bean>
+	<bean id="TsProcessedAction" class="com.wantdo.action.TsProcessedAction" scope="prototype">
+		<property name="timeSaleService">
+			<ref bean="TimeSaleService"/>
+		</property> 
+	</bean>
+	<bean id="SdProcessedAction" class="com.wantdo.action.SdProcessedAction" scope="prototype">
+		<property name="saleService">
+			<ref bean="SaleService"/>
+		</property> 
+	</bean>
+	<bean id="SdDownloadAction" class="com.wantdo.action.SdDownloadAction" scope="prototype">
+		<property name="saleService">
+			<ref bean="SaleService"/>
+		</property> 
+	</bean>
+	<bean id="FsDownloadAction" class="com.wantdo.action.FsDownloadAction" scope="prototype">
+		<property name="flowSourceService">
+			<ref bean="FlowSourceService"/>
+		</property>
+	</bean>
+	<bean id="FDownloadAction" class="com.wantdo.action.FDownloadAction" scope="prototype">
+		<property name="flowService">
+			<ref bean="FlowService"/>
+		</property>
+	</bean>
+	<bean id="SDownloadAction" class="com.wantdo.action.SDownloadAction" scope="prototype">
+		<property name="saleService">
+			<ref bean="SaleService"/>
+		</property> 
+	</bean>
+	<bean id="GDownloadAction" class="com.wantdo.action.GDownloadAction" scope="prototype">
+		<property name="goodsService">
+			<ref bean="GoodsService"/>
+		</property> 
+	</bean>
+	<bean id="TsDownloadAction" class="com.wantdo.action.TsDownloadAction" scope="prototype">
+		<property name="timeSaleService">
+			<ref bean="TimeSaleService"/>
+		</property> 
 	</bean>
 	<bean id="SaleService"
 		class="com.wantdo.service.impl.SaleService">
 		<property name="saleDAO">
 			<ref bean="SaleDAO" />
+		</property>
+	</bean>
+	<bean id="OrderSaleService"
+		class="com.wantdo.service.impl.OrderSaleService">
+		<property name="orderSaleDAO">
+			<ref bean="OrderSaleDAO" />
+		</property>
+	</bean>
+	<bean id="TimeSaleService"
+		class="com.wantdo.service.impl.TimeSaleService">
+		<property name="timeSaleDAO">
+			<ref bean="TimeSaleDAO" />
 		</property>
 	</bean>
 	<bean id="GoodsService"
@@ -94,6 +213,24 @@
 		class="com.wantdo.service.impl.FlowSourceService">
 		<property name="flowSourceDAO">
 			<ref bean="FlowSourceDAO" />
+		</property>
+	</bean>
+	<bean id="OrderJdService"
+		class="com.wantdo.service.impl.OrderJdService">
+		<property name="orderJdDAO">
+			<ref bean="OrderJdDAO" />
+		</property>
+	</bean>
+	<bean id="CusShopsService" 
+		class="com.wantdo.service.impl.CusShopsService">
+		<property name="cusShopsDAO">
+			<ref bean="CusShopsDAO"/>
+		</property>
+	</bean>
+	<bean id="WspShopsService"	
+		class="com.wantdo.service.impl.WspShopsService">
+		<property name="wspShopsDAO">
+			<ref bean="WspShopsDAO" />
 		</property>
 	</bean>
 	

@@ -40,8 +40,11 @@
         <property name="orderPrice" type="java.lang.String">
             <column name="orderPrice" length="50" />
         </property>
-        <property name="gettime" type="java.lang.String">
-            <column name="gettime" length="50" />
+        <property name="gettime" type="java.sql.Timestamp">
+            <column name="gettime" length="23" />
+        </property>
+        <property name="version" type="java.lang.String">
+            <column name="version" length="50" />
         </property>
     </class>
 </hibernate-mapping>

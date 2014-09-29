@@ -1,5 +1,6 @@
 package com.wantdo.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import com.wantdo.dao.ISaleDAO;
@@ -30,8 +31,34 @@ public class SaleService implements ISaleService{
 	}
 
 	@Override
-	public List<Sale> getSale(String json) {
+	public List<Sale> getData(String json) {
 		// TODO Auto-generated method stub
-		return saleDAO.getSale(json);
+		return saleDAO.getData(json);
+	}
+
+	@Override
+	public List<Sale> findbyTimeAndName(Date saleTime, String shopName) {
+		// TODO Auto-generated method stub
+		return saleDAO.findbyTimeAndName(saleTime, shopName);
+	}
+
+	@Override
+	public List<Sale> getByOpDate(String startTime, String endTime)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return saleDAO.getByOpDate(startTime, endTime);
+	}
+
+	@Override
+	public List getByOpDayDate(String startTime, String endTime)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return saleDAO.getByOpDayDate(startTime, endTime);
+	}
+
+	@Override
+	public void update(Sale sale) {
+		saleDAO.update(sale);
+		
 	}
 }

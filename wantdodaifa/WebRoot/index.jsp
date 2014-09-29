@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    <head>
     <base href="<%=basePath%>">
     
-    <title>代发</title>
+    <title>数据查看</title>
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
@@ -19,40 +19,120 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" href="<%=basePath %>css/bootstrap.min.css">
 	<script src="<%=basePath %>js/jquery-1.11.0.js"></script>
 	<script src="<%=basePath %>js/bootstrap.min.js"></script>
-
+ 	<script src="<%=request.getContextPath()%>/js/My97DatePicker/WdatePicker.js"  type="text/javascript"></script>
+ 	<script language="JavaScript">
+     function timeQuery(){
+	    	if (document.getElementById("startTime").value==""||document.getElementById("endTime").value=="") {
+				alert("请选择日期后查询");
+			}else {
+				var startTime=document.getElementById("startTime").value.replace(/\-/g,"");
+		    	var endTime=document.getElementById("endTime").value.replace(/\-/g,"");
+		    	if (parseInt(startTime)>parseInt(endTime)) {
+					alert("开始日期必须小于或等于结束日期");
+				}else {
+					var dataType = $("#list option:selected").val();
+					if(dataType == "sale"){
+					window.open("<%=basePath%>SProcessedAction.action?startTime="+startTime+
+			    			"&endTime="+endTime);
+					}
+					if(dataType == "flow"){
+					window.open("<%=basePath%>FProcessedAction.action?startTime="+startTime+
+			    			"&endTime="+endTime);
+					}
+					if(dataType == "flowSource"){
+					window.open("<%=basePath%>FsProcessedAction.action?startTime="+startTime+
+			    			"&endTime="+endTime);
+					}
+					if(dataType == "goods"){
+					window.open("<%=basePath%>GProcessedAction.action?startTime="+startTime+
+			    			"&endTime="+endTime);
+					}
+					if(dataType == "timeSale"){
+					window.open("<%=basePath%>TsProcessedAction.action?startTime="+startTime+
+			    			"&endTime="+endTime);
+					}
+					if(dataType == "saleDay"){
+					window.open("<%=basePath%>SdProcessedAction.action?startTime="+startTime+
+			    			"&endTime="+endTime);
+					}
+				}
+			}
+	    	
+	    }
+		
+		function timeDownload(){
+			if (document.getElementById("startTime").value==""||document.getElementById("endTime").value=="") {
+				alert("请选择日期后下载");
+			}else {
+				var startTime=document.getElementById("startTime").value.replace(/\-/g,"");
+		    	var endTime=document.getElementById("endTime").value.replace(/\-/g,"");
+		    	if (parseInt(startTime)>parseInt(endTime)) {
+					alert("开始日期必须小于或等于结束日期");
+				}else {
+				var dataType = $("#list option:selected").val();
+					if(dataType == "sale"){
+					window.open("<%=basePath%>SDownloadAction.action?startTime="+startTime+
+			    			"&endTime="+endTime);
+					}
+					if(dataType == "flow"){
+					window.open("<%=basePath%>FDownloadAction.action?startTime="+startTime+
+			    			"&endTime="+endTime);
+					}
+					if(dataType == "flowSource"){
+					window.open("<%=basePath%>FsDownloadAction.action?startTime="+startTime+
+			    			"&endTime="+endTime);
+					}
+					if(dataType == "goods"){
+					window.open("<%=basePath%>GDownloadAction.action?startTime="+startTime+
+			    			"&endTime="+endTime);
+					}
+					if(dataType == "timeSale"){
+					window.open("<%=basePath%>TsDownloadAction.action?startTime="+startTime+
+			    			"&endTime="+endTime);
+					}
+					if(dataType == "saleDay"){
+					window.open("<%=basePath%>SdDownloadAction.action?startTime="+startTime+
+			    			"&endTime="+endTime);
+					}
+				}
+			}
+	    }
+  </script>
+  <style type="text/css">
+	.dt{width:150px;height:30px;font:16px 'Microsoft YaHei',微软雅黑,Verdana,arial,sans-serif;}
+  </style>
   </head>
   
   <body>
-  <div class="jumbotron">
-    <div class="jumbotron">
-    	<div class="alert alert-success" role="alert">请拖动以下"淘宝代发"到收藏栏<br>
-		<a id="collectbtn-drag" class="collectbtn" href="javascript:void((function(){var%20d=document,e=d.createElement('script');e.setAttribute('charset','utf-8');e.setAttribute('src','http://localhost:8080/wantdodaifa/js/tbd.js');d.body.appendChild(e);})());">淘宝代发</a>
-		</div>
-		<div class="alert alert-success" role="alert">请拖动以下"京东代发"到收藏栏<br>
-		<a id="collectbtn-drag" class="collectbtn" href="javascript:void((function(){var%20d=document,e=d.createElement('script');e.setAttribute('charset','utf-8');e.setAttribute('src','http://localhost:8080/wantdodaifa/js/jdd.js');d.body.appendChild(e);})());">京东代发</a>
-		</div>
-		<div class="alert alert-success" role="alert">请拖动以下"当当抓取"到收藏栏<br>
-		<a id="collectbtn-drag" class="collectbtn" href="javascript:void((function(){var%20d=document,e=d.createElement('script');e.setAttribute('charset','utf-8');e.setAttribute('src','http://localhost:8080/wantdodaifa/js/ddz.js');d.body.appendChild(e);})());">当当抓取</a>
-		</div>
-		<div class="alert alert-success" role="alert">请拖动以下"京东抓取"到收藏栏<br>
-		<a id="collectbtn-drag" class="collectbtn" href="javascript:void((function(){var%20d=document,e=d.createElement('script');e.setAttribute('charset','utf-8');e.setAttribute('src','http://localhost:8080/wantdodaifa/js/jdz.js');d.body.appendChild(e);})());">京东抓取</a>
-		</div>
-		<div class="alert alert-success" role="alert">请拖动以下"淘宝抓取"到收藏栏<br>
-		<a id="collectbtn-drag" class="collectbtn" href="javascript:void((function(){var%20d=document,e=d.createElement('script');e.setAttribute('charset','utf-8');e.setAttribute('src','http://localhost:8080/wantdodaifa/js/tbz.js');d.body.appendChild(e);})());">淘宝抓取</a>
-		</div>
+  <div class="well well-lg">
+<div class="alert alert-info" style="font-size:large;">
+ <div class="time" style="margin:10px;">
+ 请选择数据 
+<select id='list'  class="dt">
+    <option value='sale'>销量</option>
+    <option value='flow'>流量</option>
+    <option value='timeSale'>实时销量</option>
+    <option value='flowSource'>流量来源</option>
+    <option value='goods'>上架商品</option>
+    <option value='saleDay'>销量日报</option>
+</select>
+</div>
+  <div class="time_menu" style="margin:10px;">
+		从&nbsp;<input id="startTime"  class="dt"  type="text"/>
+		<img onclick="WdatePicker({el:'startTime'})" src="<%=request.getContextPath()%>/js/My97DatePicker/skin/datePicker.gif" 
+			width="14" height="24" align="absmiddle">
 	</div>
-		<hr>
-		<div class="alert alert-info" role="alert">
-		<p>温馨提示：如果您用的是360安全浏览器，请按照以下操作：</p>
-		<p>1，在收藏栏中找一个不用的标签，或者重新收藏任意一个网页。</p>
-		<p>2，右键1中的标签，选择“编辑”。</p>
-		<p>3，将网页标题改为“一键代发”，复制一下代码到网页地址，点击确定即可。</p>
-		<div class="alert alert-warning" role="alert">
-		javascript:void((function(){var%20d=document,e=d.createElement('script');e.setAttribute('charset','utf-8');e.setAttribute('src','http://localhost:8080/wantdodaifa/js/d.js');d.body.appendChild(e);})());
-		</div>
-		</div>
-		
+	<div class="time_menu" style="margin:10px;">
+		到&nbsp;<input id="endTime" class="dt"  type="text"/>
+		<img onclick="WdatePicker({el:'endTime'})" src="<%=request.getContextPath()%>/js/My97DatePicker/skin/datePicker.gif" 
+			width="12" height="24" align="absmiddle">
 	</div>
+<div class="timeSub" style="margin:10px;">
+	<button type="button" class="btn btn-primary timeSubmit btn-sm"  value="查询" onclick="timeQuery()">查询</button>&nbsp;&nbsp;
+	<button type="button" class="btn btn-primary timeSubmit btn-sm"  value="下载" onclick="timeDownload()">下载</button>
+</div>
+</div>
+ </div> 
 	
   </body>
 </html>

@@ -1,4 +1,24 @@
 function daifaMode(b){
+	//当前日期
+	Date.prototype.Format = function (fmt) { //author: meizz 
+	    var o = {
+	        "M+": this.getMonth() + 1, //月份 
+	        "d+": this.getDate(), //日 
+	        "h+": this.getHours(), //小时 
+	        "m+": this.getMinutes(), //分 
+	        "s+": this.getSeconds(), //秒 
+	        "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+	        "S": this.getMilliseconds() //毫秒 
+	    };
+	    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+	    for (var k in o)
+	    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+	    return fmt;
+	}
+	var myday = new Date();
+	myday = myday.Format("yyyy-MM-dd hh:mm:ss");
+    //版本号
+    var version = "1.0";
 if(window.location.pathname=="/order/sopUp_waitOutList.action"){
 	"undefined"==typeof jQuery&&setTimeout("daifaMode(durl);",50),
 	$("a:contains(批量备注)").after('<a class="btn_type daifa"  track="batchprintdeliverybeta" style="margin-right:0;" href="#">批量代发</a>');
@@ -50,7 +70,7 @@ if(window.location.pathname=="/order/sopUp_waitOutList.action"){
 		adress = adress.substring(7,adress.length);
 		var phone = $(".fore").children("dd").children("ul").find("li:contains(手机号码)").text();
 		phone = phone.substring(5,phone.length);
-		orderJson+="\"name\":\"" +name+"\",";
+		orderJson+="{\"name\":\"" +name+"\",";
 		orderJson+="\"address\":\"" +adress+"\",";
 		orderJson+="\"phone\":\"" +phone+"\",";
 		
@@ -68,12 +88,17 @@ if(window.location.pathname=="/order/sopUp_waitOutList.action"){
 		orderJson+="\"primeCost\":\"" +detail[2]+"\",";
 		orderJson+="\"discountCost\":\"" +detail[3]+"\",";
 		orderJson+="\"orderNum\":\"" +detail[6]+"\",";
-		
-		orderJson+="\"orderPrice\":\"" +$(".ftx04").find("b").text().toString().trim()+"\"";
-		alert(orderJson);
-		$.post(b + "/jddfServlet",{orderJson:orderJson},function(){});
+		orderJson+="\"orderPrice\":\"" +$(".ftx04").find("b").text().toString().trim()+"\",";
+		orderJson+="\"gettime\":\"" +myday+"\",";
+		orderJson+="\"version\":\"" +version+"\"}";
+//		alert(orderJson);
+		$(".fore").after("<form  id='orderpost' method='post' action='"+b+"/JDDFAction.action'></form>");
+	    $("#orderpost").append("<input type='hidden' name='orderJson' value='"+orderJson+"' />");
+	    $("#orderpost").submit();
+//		setTimeout("location.href='"+b+"/JDDFAction.action?orderJson="+orderJson+"'",200);
+//		$.post(b + "/jddfServlet",{orderJson:orderJson},function(){});
 //		setTimeout("location.href='http://order.shop.jd.com/order/sopUp_waitOutList.action'",5000);
-//		setTimeout("window.close()",2000);
+		setTimeout("window.close()",2000);
 }
 }
 var h,s=document.createElement("script");s.src="http://code.jquery.com/jquery-1.4.1.min.js",

@@ -16,17 +16,20 @@
         <property name="sku" type="java.lang.String">
             <column name="sku" length="50" />
         </property>
-        <property name="goodsTime" type="java.lang.String">
-            <column name="goodsTime" length="50" />
+        <property name="goodsTime" type="java.util.Date">
+            <column name="goodsTime" length="10" />
         </property>
-        <property name="nowTime" type="java.lang.String">
-            <column name="nowTime" length="50" />
+        <property name="nowTime" type="java.sql.Timestamp">
+            <column name="nowTime" length="23" />
         </property>
         <property name="shopName" type="java.lang.String">
             <column name="shopName" length="50" />
         </property>
         <property name="platform" type="java.lang.String">
             <column name="`platform `" length="50" />
+        </property>
+        <property name="version" type="java.lang.String">
+            <column name="version" length="50" />
         </property>
     </class>
 </hibernate-mapping>

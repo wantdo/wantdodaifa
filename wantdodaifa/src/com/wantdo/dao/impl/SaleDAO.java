@@ -1,5 +1,7 @@
 package com.wantdo.dao.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.LockMode;
@@ -10,6 +12,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import com.alibaba.fastjson.JSON;
 import com.wantdo.dao.ISaleDAO;
+import com.wantdo.pojo.Goods;
 import com.wantdo.pojo.Sale;
 
 /**
@@ -31,18 +34,12 @@ public class SaleDAO extends HibernateDaoSupport implements ISaleDAO{
 	public static final String ORDER_GOODS_NUM = "orderGoodsNum";
 	public static final String ORDER_CLIENT_NUM = "orderClientNum";
 	public static final String CLIENT_PRICE = "clientPrice";
-	public static final String SALE_TIME = "saleTime";
-	public static final String NOW_TIME = "nowTime";
 	public static final String SHOP_NAME = "shopName";
 	public static final String PLATFORM = "platform";
+	public static final String VERSION = "version";
 
 	protected void initDao() {
 		// do nothing
-	}
-	@Override
-	public List<Sale> getSale(String json) {
-		List<Sale> sales = JSON.parseArray(json, Sale.class);
-		return sales;
 	}
 
 	public void save(Sale transientInstance) {
@@ -125,20 +122,16 @@ public class SaleDAO extends HibernateDaoSupport implements ISaleDAO{
 		return findByProperty(CLIENT_PRICE, clientPrice);
 	}
 
-	public List findBySaleTime(Object saleTime) {
-		return findByProperty(SALE_TIME, saleTime);
-	}
-
-	public List findByNowTime(Object nowTime) {
-		return findByProperty(NOW_TIME, nowTime);
-	}
-
 	public List findByShopName(Object shopName) {
 		return findByProperty(SHOP_NAME, shopName);
 	}
 
 	public List findByPlatform(Object platform) {
 		return findByProperty(PLATFORM, platform);
+	}
+
+	public List findByVersion(Object version) {
+		return findByProperty(VERSION, version);
 	}
 
 	public List findAll() {
@@ -188,5 +181,66 @@ public class SaleDAO extends HibernateDaoSupport implements ISaleDAO{
 
 	public static SaleDAO getFromApplicationContext(ApplicationContext ctx) {
 		return (SaleDAO) ctx.getBean("SaleDAO");
+	}
+	@Override
+	public List<Sale> getData(String json) {
+		List<Sale> sales = JSON.parseArray(json, Sale.class);
+		return sales;
+	}
+
+	@Override
+	public List<Sale> findbyTimeAndName(Date saleTime, String shopName) {
+		log.debug("finding all Sale instances");
+		try {
+			String queryString = "from Sale as s where s.saleTime=? and shopName=?";
+			return getHibernateTemplate().find(queryString,new Object[]{saleTime,shopName});
+		} catch (RuntimeException re) {
+			log.error("find all failed", re);
+			throw re;
+		}
+	}
+	
+	public List<Sale> getByOpDate(String startTime, String endTime) throws Exception {
+		log.debug("finding Sale instance with startTime: " + startTime+" and endTime:"+endTime);
+		try {
+			SimpleDateFormat sdf=new SimpleDateFormat("yy-MM-dd");
+			String queryString="from Sale as model where model.saleTime " +
+					"between ? and ? order by model.saleTime asc";
+			return getHibernateTemplate().find(queryString, new Object[]{sdf.parse(startTime),sdf.parse(endTime)});
+		} catch (RuntimeException re) {
+			// TODO: handle exception
+			log.error("find by startTime and endTime failed", re);
+			throw re;
+		}
+	}
+
+	@Override
+	public List getByOpDayDate(String startTime, String endTime)
+			throws Exception {
+		log.debug("finding Sale instance with startTime: " + startTime+" and endTime:"+endTime);
+		try {
+			SimpleDateFormat sdf=new SimpleDateFormat("yy-MM-dd");
+//			String queryString="select model.saleTime,model.shopName,model.sales,model.clientPrice,f.shopDealRate from Sale as model,Flow f where model.shopName = f.shopName and model.saleTime = f.flowTime and model.saleTime " +
+//					"between ? and ? order by model.saleTime asc";
+			String queryString="from Sale as model,Flow f where model.shopName = f.shopName and model.saleTime = f.flowTime and model.saleTime " +
+					"between ? and ? order by model.saleTime asc";
+			return getHibernateTemplate().find(queryString, new Object[]{sdf.parse(startTime),sdf.parse(endTime)});
+		} catch (RuntimeException re) {
+			// TODO: handle exception
+			log.error("find by startTime and endTime failed", re);
+			throw re;
+		}
+	}
+
+	@Override
+	public void update(Sale sale) {
+		log.debug("updating Sale instance");
+        try {
+            getHibernateTemplate().update(sale);
+            log.debug("update successful");
+        } catch (RuntimeException re) {
+            log.error("update failed", re);
+            throw re;
+        }
 	}
 }

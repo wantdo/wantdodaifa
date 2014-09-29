@@ -23,9 +23,9 @@ public class OrderJdService implements IOrderJdService {
 	}
 
 	@Override
-	public List<OrderJd> getSale(String json) {
+	public List<OrderJd> getData(String json) {
 		// TODO Auto-generated method stub
-		return orderJdDAO.getSale(json);
+		return orderJdDAO.getData(json);
 	}
 	
 	

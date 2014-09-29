@@ -1,5 +1,8 @@
 package com.wantdo.pojo;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 /**
  * FlowSource entity. @author MyEclipse Persistence Tools
  */
@@ -14,10 +17,11 @@ public class FlowSource implements java.io.Serializable {
 	private String landPageViewAccounted;
 	private String pageView;
 	private String pageViewAccounted;
-	private String flowSourceTime;
-	private String nowTime;
+	private Date flowSourceTime;
+	private Timestamp nowTime;
 	private String shopName;
 	private String platform;
+	private String version;
 
 	// Constructors
 
@@ -28,8 +32,8 @@ public class FlowSource implements java.io.Serializable {
 	/** full constructor */
 	public FlowSource(String flowSource, String landPageView,
 			String landPageViewAccounted, String pageView,
-			String pageViewAccounted, String flowSourceTime, String nowTime,
-			String shopName, String platform) {
+			String pageViewAccounted, Date flowSourceTime, Timestamp nowTime,
+			String shopName, String platform, String version) {
 		this.flowSource = flowSource;
 		this.landPageView = landPageView;
 		this.landPageViewAccounted = landPageViewAccounted;
@@ -39,6 +43,7 @@ public class FlowSource implements java.io.Serializable {
 		this.nowTime = nowTime;
 		this.shopName = shopName;
 		this.platform = platform;
+		this.version = version;
 	}
 
 	// Property accessors
@@ -91,19 +96,19 @@ public class FlowSource implements java.io.Serializable {
 		this.pageViewAccounted = pageViewAccounted;
 	}
 
-	public String getFlowSourceTime() {
+	public Date getFlowSourceTime() {
 		return this.flowSourceTime;
 	}
 
-	public void setFlowSourceTime(String flowSourceTime) {
+	public void setFlowSourceTime(Date flowSourceTime) {
 		this.flowSourceTime = flowSourceTime;
 	}
 
-	public String getNowTime() {
+	public Timestamp getNowTime() {
 		return this.nowTime;
 	}
 
-	public void setNowTime(String nowTime) {
+	public void setNowTime(Timestamp nowTime) {
 		this.nowTime = nowTime;
 	}
 
@@ -121,6 +126,14 @@ public class FlowSource implements java.io.Serializable {
 
 	public void setPlatform(String platform) {
 		this.platform = platform;
+	}
+
+	public String getVersion() {
+		return this.version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
 	}
 
 }

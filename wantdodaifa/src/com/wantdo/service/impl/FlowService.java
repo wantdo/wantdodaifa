@@ -1,5 +1,6 @@
 package com.wantdo.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import com.wantdo.dao.IFlowDAO;
@@ -22,9 +23,9 @@ public class FlowService implements IFlowService {
 	}
 
 	@Override
-	public List<Flow> getSale(String json) {
+	public List<Flow> getData(String json) {
 		// TODO Auto-generated method stub
-		return flowDAO.getSale(json);
+		return flowDAO.getData(json);
 	}
 
 	public IFlowDAO getFlowDAO() {
@@ -34,5 +35,30 @@ public class FlowService implements IFlowService {
 	public void setFlowDAO(IFlowDAO flowDAO) {
 		this.flowDAO = flowDAO;
 	}
+
+	@Override
+	public List<Flow> findbyTimeAndNameV(Date flowTime,String shopName,String version) {
+		return flowDAO.findbyTimeAndNameV(flowTime, shopName,version);
+	}
+
+	@Override
+	public void update(Flow flow) {
+		// TODO Auto-generated method stub
+		flowDAO.update(flow);
+	}
+
+	@Override
+	public List<Flow> findbyTimeAndName(Date flowTime, String shopName) {
+		// TODO Auto-generated method stub
+		return flowDAO.findbyTimeAndName(flowTime, shopName);
+	}
+
+	@Override
+	public List<Flow> getByOpDate(String startTime, String endTime)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return flowDAO.getByOpDate(startTime, endTime);
+	}
+	
 
 }

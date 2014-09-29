@@ -9,6 +9,6 @@ public interface IOrderJdService {
 	
 	public abstract void save(OrderJd orderJd);
 	
-	public List<OrderJd> getSale(String json);
+	public List<OrderJd> getData(String json);
 
 }

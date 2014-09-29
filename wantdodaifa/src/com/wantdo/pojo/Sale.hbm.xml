@@ -25,17 +25,20 @@
         <property name="clientPrice" type="java.lang.String">
             <column name="clientPrice" length="50" />
         </property>
-        <property name="saleTime" type="java.lang.String">
-            <column name="saleTime" length="50" />
+        <property name="saleTime" type="java.util.Date">
+            <column name="saleTime" length="10" />
         </property>
-        <property name="nowTime" type="java.lang.String">
-            <column name="nowTime" length="50" />
+        <property name="nowTime" type="java.sql.Timestamp">
+            <column name="nowTime" length="23" />
         </property>
         <property name="shopName" type="java.lang.String">
-            <column name="shopName" length="50" />
+            <column name="shopName" length="200" />
         </property>
         <property name="platform" type="java.lang.String">
             <column name="platform" length="50" />
+        </property>
+        <property name="version" type="java.lang.String">
+            <column name="version" length="50" />
         </property>
     </class>
 </hibernate-mapping>

@@ -1,6 +1,9 @@
 package com.wantdo.dao.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+
 import org.hibernate.LockMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +13,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import com.alibaba.fastjson.JSON;
 import com.wantdo.dao.IFlowDAO;
 import com.wantdo.pojo.Flow;
-import com.wantdo.pojo.Sale;
+import com.wantdo.pojo.FlowSource;
 
 /**
  * A data access object (DAO) providing persistence and search support for Flow
@@ -23,7 +26,7 @@ import com.wantdo.pojo.Sale;
  * @see com.wantdo.pojo.Flow
  * @author MyEclipse Persistence Tools
  */
-public class FlowDAO extends HibernateDaoSupport implements IFlowDAO{
+public class FlowDAO extends HibernateDaoSupport  implements IFlowDAO{
 	private static final Logger log = LoggerFactory.getLogger(FlowDAO.class);
 	// property constants
 	public static final String PAGEVIEWS = "pageviews";
@@ -39,10 +42,9 @@ public class FlowDAO extends HibernateDaoSupport implements IFlowDAO{
 	public static final String FIRST_PAYMENT_RATE = "firstPaymentRate";
 	public static final String THIRTY_CUSTOMER_RETENTION = "thirtyCustomerRetention";
 	public static final String THIRTY_REPEAT_PURCHASE_RATE = "thirtyRepeatPurchaseRate";
-	public static final String FLOW_TIME = "flowTime";
-	public static final String NOW_TIME = "nowTime";
 	public static final String SHOP_NAME = "shopName";
 	public static final String PLATFORM = "platform";
+	public static final String VERSION = "version";
 
 	protected void initDao() {
 		// do nothing
@@ -162,20 +164,16 @@ public class FlowDAO extends HibernateDaoSupport implements IFlowDAO{
 				thirtyRepeatPurchaseRate);
 	}
 
-	public List findByFlowTime(Object flowTime) {
-		return findByProperty(FLOW_TIME, flowTime);
-	}
-
-	public List findByNowTime(Object nowTime) {
-		return findByProperty(NOW_TIME, nowTime);
-	}
-
 	public List findByShopName(Object shopName) {
 		return findByProperty(SHOP_NAME, shopName);
 	}
 
 	public List findByPlatform(Object platform) {
 		return findByProperty(PLATFORM, platform);
+	}
+
+	public List findByVersion(Object version) {
+		return findByProperty(VERSION, version);
 	}
 
 	public List findAll() {
@@ -226,10 +224,59 @@ public class FlowDAO extends HibernateDaoSupport implements IFlowDAO{
 	public static FlowDAO getFromApplicationContext(ApplicationContext ctx) {
 		return (FlowDAO) ctx.getBean("FlowDAO");
 	}
-
+	
 	@Override
-	public List<Flow> getSale(String json) {
+	public List<Flow> getData(String json) {
 		List<Flow> flows = JSON.parseArray(json, Flow.class);
 		return flows;
 	}
+
+	@Override
+	public List<Flow> findbyTimeAndNameV(Date flowTime, String shopName,String version) {
+		log.debug("finding all Flow instances");
+		try {
+			String queryString = "from Flow as f where f.flowTime=? and shopName=? and version=?";
+			return getHibernateTemplate().find(queryString,new Object[]{flowTime,shopName,version});
+		} catch (RuntimeException re) {
+			log.error("find all failed", re);
+			throw re;
+		}
+	}
+	public void update(Flow flow) {
+        log.debug("updating Flow instance");
+        try {
+            getHibernateTemplate().update(flow);
+            log.debug("update successful");
+        } catch (RuntimeException re) {
+            log.error("update failed", re);
+            throw re;
+        }
+    }
+
+	@Override
+	public List<Flow> findbyTimeAndName(Date flowTime, String shopName) {
+		log.debug("finding all Flow instances");
+		try {
+			String queryString = "from Flow as f where f.flowTime=? and shopName=?";
+			return getHibernateTemplate().find(queryString,new Object[]{flowTime, shopName});
+		} catch (RuntimeException re) {
+			log.error("find all failed", re);
+			throw re;
+		}
+	}
+	
+	public List<Flow> getByOpDate(String startTime, String endTime) throws Exception {
+		log.debug("finding Flow instance with startTime: " + startTime+" and endTime:"+endTime);
+		try {
+			SimpleDateFormat sdf=new SimpleDateFormat("yy-MM-dd");
+			String queryString="from Flow as model where model.flowTime " +
+					"between ? and ? order by model.flowTime asc";
+			return getHibernateTemplate().find(queryString, new Object[]{sdf.parse(startTime),sdf.parse(endTime)});
+		} catch (RuntimeException re) {
+			// TODO: handle exception
+			log.error("find by startTime and endTime failed", re);
+			throw re;
+		}
+	}
+
 }

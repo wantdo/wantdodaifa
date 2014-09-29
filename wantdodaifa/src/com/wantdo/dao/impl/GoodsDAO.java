@@ -1,6 +1,9 @@
 package com.wantdo.dao.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+
 import org.hibernate.LockMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +13,6 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import com.alibaba.fastjson.JSON;
 import com.wantdo.dao.IGoodsDAO;
 import com.wantdo.pojo.Goods;
-import com.wantdo.pojo.Sale;
 
 /**
  * A data access object (DAO) providing persistence and search support for Goods
@@ -28,10 +30,9 @@ public class GoodsDAO extends HibernateDaoSupport implements IGoodsDAO{
 	// property constants
 	public static final String SPU = "spu";
 	public static final String SKU = "sku";
-	public static final String GOODS_TIME = "goodsTime";
-	public static final String NOW_TIME = "nowTime";
 	public static final String SHOP_NAME = "shopName";
 	public static final String PLATFORM = "platform";
+	public static final String VERSION = "version";
 
 	protected void initDao() {
 		// do nothing
@@ -105,20 +106,16 @@ public class GoodsDAO extends HibernateDaoSupport implements IGoodsDAO{
 		return findByProperty(SKU, sku);
 	}
 
-	public List findByGoodsTime(Object goodsTime) {
-		return findByProperty(GOODS_TIME, goodsTime);
-	}
-
-	public List findByNowTime(Object nowTime) {
-		return findByProperty(NOW_TIME, nowTime);
-	}
-
 	public List findByShopName(Object shopName) {
 		return findByProperty(SHOP_NAME, shopName);
 	}
 
 	public List findByPlatform(Object platform) {
 		return findByProperty(PLATFORM, platform);
+	}
+
+	public List findByVersion(Object version) {
+		return findByProperty(VERSION, version);
 	}
 
 	public List findAll() {
@@ -170,10 +167,36 @@ public class GoodsDAO extends HibernateDaoSupport implements IGoodsDAO{
 	public static GoodsDAO getFromApplicationContext(ApplicationContext ctx) {
 		return (GoodsDAO) ctx.getBean("GoodsDAO");
 	}
-
+	
 	@Override
-	public List<Goods> getSale(String json) {
+	public List<Goods> getData(String json) {
 		List<Goods> goodss = JSON.parseArray(json, Goods.class);
 		return goodss;
+	}
+
+	@Override
+	public List<Goods> findbyTimeAndName(Date goodsTime, String shopName) {
+		log.debug("finding all Goods instances");
+		try {
+			String queryString = "from Goods as g where g.goodsTime=? and shopName=?";
+			return getHibernateTemplate().find(queryString,new Object[]{goodsTime, shopName});
+		} catch (RuntimeException re) {
+			log.error("find all failed", re);
+			throw re;
+		}
+	}
+	
+	public List<Goods> getByOpDate(String startTime, String endTime) throws Exception {
+		log.debug("finding Goods instance with startTime: " + startTime+" and endTime:"+endTime);
+		try {
+			SimpleDateFormat sdf=new SimpleDateFormat("yy-MM-dd");
+			String queryString="from Goods as model where model.goodsTime " +
+					"between ? and ? order by model.goodsTime asc";
+			return getHibernateTemplate().find(queryString, new Object[]{sdf.parse(startTime),sdf.parse(endTime)});
+		} catch (RuntimeException re) {
+			// TODO: handle exception
+			log.error("find by startTime and endTime failed", re);
+			throw re;
+		}
 	}
 }

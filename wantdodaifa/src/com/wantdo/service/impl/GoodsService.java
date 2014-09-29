@@ -1,5 +1,6 @@
 package com.wantdo.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import com.wantdo.dao.IGoodsDAO;
@@ -22,9 +23,9 @@ public class GoodsService implements IGoodsService {
 	}
 
 	@Override
-	public List<Goods> getSale(String json) {
+	public List<Goods> getData(String json) {
 		// TODO Auto-generated method stub
-		return goodsDAO.getSale(json);
+		return goodsDAO.getData(json);
 	}
 
 	public IGoodsDAO getGoodsDAO() {
@@ -33,6 +34,19 @@ public class GoodsService implements IGoodsService {
 
 	public void setGoodsDAO(IGoodsDAO goodsDAO) {
 		this.goodsDAO = goodsDAO;
+	}
+
+	@Override
+	public List<Goods> findbyTimeAndName(Date goodsTime, String shopName) {
+		// TODO Auto-generated method stub
+		return goodsDAO.findbyTimeAndName(goodsTime, shopName);
+	}
+
+	@Override
+	public List<Goods> getByOpDate(String startTime, String endTime)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return goodsDAO.getByOpDate(startTime, endTime);
 	}
 
 	

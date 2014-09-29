@@ -1,6 +1,7 @@
 package com.wantdo.dao.impl;
 
 import java.util.List;
+
 import org.hibernate.LockMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +11,6 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import com.alibaba.fastjson.JSON;
 import com.wantdo.dao.IOrderJdDAO;
 import com.wantdo.pojo.OrderJd;
-import com.wantdo.pojo.Sale;
 
 /**
  * A data access object (DAO) providing persistence and search support for
@@ -36,7 +36,7 @@ public class OrderJdDAO extends HibernateDaoSupport implements IOrderJdDAO{
 	public static final String DISCOUNT_COST = "discountCost";
 	public static final String ORDER_NUM = "orderNum";
 	public static final String ORDER_PRICE = "orderPrice";
-	public static final String GETTIME = "gettime";
+	public static final String VERSION = "version";
 
 	protected void initDao() {
 		// do nothing
@@ -142,8 +142,8 @@ public class OrderJdDAO extends HibernateDaoSupport implements IOrderJdDAO{
 		return findByProperty(ORDER_PRICE, orderPrice);
 	}
 
-	public List findByGettime(Object gettime) {
-		return findByProperty(GETTIME, gettime);
+	public List findByVersion(Object version) {
+		return findByProperty(VERSION, version);
 	}
 
 	public List findAll() {
@@ -195,9 +195,9 @@ public class OrderJdDAO extends HibernateDaoSupport implements IOrderJdDAO{
 	public static OrderJdDAO getFromApplicationContext(ApplicationContext ctx) {
 		return (OrderJdDAO) ctx.getBean("OrderJdDAO");
 	}
-
+	
 	@Override
-	public List<OrderJd> getSale(String json) {
+	public List<OrderJd> getData(String json) {
 		List<OrderJd> orderJds = JSON.parseArray(json, OrderJd.class);
 		return orderJds;
 	}

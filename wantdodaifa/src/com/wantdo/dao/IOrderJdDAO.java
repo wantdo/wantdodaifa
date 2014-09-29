@@ -5,7 +5,7 @@ import java.util.List;
 import com.wantdo.pojo.OrderJd;
 
 public interface IOrderJdDAO {
-	List<OrderJd> getSale(String json);
+	List<OrderJd> getData(String json);
 	
 	public void save(OrderJd orderJd);
 	

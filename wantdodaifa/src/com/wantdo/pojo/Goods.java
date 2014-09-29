@@ -1,5 +1,8 @@
 package com.wantdo.pojo;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 /**
  * Goods entity. @author MyEclipse Persistence Tools
  */
@@ -11,10 +14,11 @@ public class Goods implements java.io.Serializable {
 	private Integer id;
 	private String spu;
 	private String sku;
-	private String goodsTime;
-	private String nowTime;
+	private Date goodsTime;
+	private Timestamp nowTime;
 	private String shopName;
 	private String platform;
+	private String version;
 
 	// Constructors
 
@@ -23,14 +27,15 @@ public class Goods implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public Goods(String spu, String sku, String goodsTime, String nowTime,
-			String shopName, String platform) {
+	public Goods(String spu, String sku, Date goodsTime, Timestamp nowTime,
+			String shopName, String platform, String version) {
 		this.spu = spu;
 		this.sku = sku;
 		this.goodsTime = goodsTime;
 		this.nowTime = nowTime;
 		this.shopName = shopName;
 		this.platform = platform;
+		this.version = version;
 	}
 
 	// Property accessors
@@ -59,19 +64,19 @@ public class Goods implements java.io.Serializable {
 		this.sku = sku;
 	}
 
-	public String getGoodsTime() {
+	public Date getGoodsTime() {
 		return this.goodsTime;
 	}
 
-	public void setGoodsTime(String goodsTime) {
+	public void setGoodsTime(Date goodsTime) {
 		this.goodsTime = goodsTime;
 	}
 
-	public String getNowTime() {
+	public Timestamp getNowTime() {
 		return this.nowTime;
 	}
 
-	public void setNowTime(String nowTime) {
+	public void setNowTime(Timestamp nowTime) {
 		this.nowTime = nowTime;
 	}
 
@@ -89,6 +94,14 @@ public class Goods implements java.io.Serializable {
 
 	public void setPlatform(String platform) {
 		this.platform = platform;
+	}
+
+	public String getVersion() {
+		return this.version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
 	}
 
 }

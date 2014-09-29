@@ -25,17 +25,20 @@
         <property name="pageViewAccounted" type="java.lang.String">
             <column name="pageViewAccounted" length="50" />
         </property>
-        <property name="flowSourceTime" type="java.lang.String">
-            <column name="flowSourceTime" length="1" />
+        <property name="flowSourceTime" type="java.util.Date">
+            <column name="flowSourceTime" length="10" />
         </property>
-        <property name="nowTime" type="java.lang.String">
-            <column name="nowTime" length="1" />
+        <property name="nowTime" type="java.sql.Timestamp">
+            <column name="nowTime" length="23" />
         </property>
         <property name="shopName" type="java.lang.String">
             <column name="shopName" length="50" />
         </property>
         <property name="platform" type="java.lang.String">
-            <column name="`platform `" length="50" />
+            <column name="platform" length="50" />
+        </property>
+        <property name="version" type="java.lang.String">
+            <column name="version" length="50" />
         </property>
     </class>
 </hibernate-mapping>

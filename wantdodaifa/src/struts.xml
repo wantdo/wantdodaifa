@@ -1,18 +1,99 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
 <struts>
-	<constant name="struts.i18n.encoding" value="utf-8"></constant>
-	
+	 <constant name="struts.i18n.encoding" value="utf-8"></constant> 
 	<constant name="struts.objectFactory" value="spring"></constant> 
 	
 	<package name="default" extends="struts-default">
-	
-		<action name="JDZQAction" class="JDZQAction">
+		<action name="ZQAction" class="ZQAction">
 			<!-- <interceptor-ref name="defaultStack">
 			</interceptor-ref> -->
-			<result>/WEB-INF/capture/jdInfo.jsp</result>
+			<result>/WEB-INF/capture/zqInfo.jsp</result>
+			<result name="error">/WEB-INF/capture/zqerror.jsp</result>
+		</action>
+		<action name="OrderSaleAction" class="OrderSaleAction">
+			<!-- <interceptor-ref name="defaultStack">
+			</interceptor-ref> -->
+			<result>/WEB-INF/capture/zqInfo.jsp</result>
+			<result name="error">/WEB-INF/capture/zqerror.jsp</result>
+		</action>
+		<action name="JDDFAction" class="JDDFAction">
+			<!-- <interceptor-ref name="defaultStack">
+			</interceptor-ref> -->
+			<result>/WEB-INF/capture/zqInfo.jsp</result>
 			<!-- <result name="error">/WEB-INF/cussub/cuserror.jsp</result> -->
 		</action>
-		
+		<action name="FsProcessedAction" class="FsProcessedAction">
+			<result>/WEB-INF/capture/viewInfo.jsp</result>
+			<result name="error">/WEB-INF/capture/zqerror.jsp</result>
+		</action>
+		<action name="SProcessedAction" class="SProcessedAction">
+			<result>/WEB-INF/capture/viewInfo.jsp</result>
+			<result name="error">/WEB-INF/capture/zqerror.jsp</result>
+		</action>
+		<action name="FProcessedAction" class="FProcessedAction">
+			<result>/WEB-INF/capture/viewInfo.jsp</result>
+			<result name="error">/WEB-INF/capture/zqerror.jsp</result>
+		</action>
+		<action name="GProcessedAction" class="GProcessedAction">
+			<result>/WEB-INF/capture/viewInfo.jsp</result>
+			<result name="error">/WEB-INF/capture/zqerror.jsp</result>
+		</action>
+		<action name="TsProcessedAction" class="TsProcessedAction">
+			<result>/WEB-INF/capture/viewInfo.jsp</result>
+			<result name="error">/WEB-INF/capture/zqerror.jsp</result>
+		</action>
+		<action name="SdProcessedAction" class="SdProcessedAction">
+			<result>/WEB-INF/capture/viewInfo.jsp</result>
+			<result name="error">/WEB-INF/capture/zqerror.jsp</result>
+		</action>
+		<action name="SdDownloadAction" class="SdDownloadAction">
+			<result type="stream">
+				<param name="contentType">application/vnd.ms-excel;charset=UTF-8</param>
+				<param name="inputName">downloadFile</param>
+				<param name="contentDisposition">attachment;filename="saleDaily.xls"</param>
+				<param name="bufferSize">4096</param>
+			</result>
+		</action>
+		<action name="FsDownloadAction" class="FsDownloadAction">
+			<result type="stream">
+				<param name="contentType">application/vnd.ms-excel;charset=UTF-8</param>
+				<param name="inputName">downloadFile</param>
+				<param name="contentDisposition">attachment;filename="flowSource.xls"</param>
+				<param name="bufferSize">4096</param>
+			</result>
+		</action>
+		<action name="FDownloadAction" class="FDownloadAction">
+			<result type="stream">
+				<param name="contentType">application/vnd.ms-excel;charset=UTF-8</param>
+				<param name="inputName">downloadFile</param>
+				<param name="contentDisposition">attachment;filename="flow.xls"</param>
+				<param name="bufferSize">4096</param>
+			</result>
+		</action>
+		<action name="SDownloadAction" class="SDownloadAction">
+			<result type="stream">
+				<param name="contentType">application/vnd.ms-excel;charset=UTF-8</param>
+				<param name="inputName">downloadFile</param>
+				<param name="contentDisposition">attachment;filename="sale.xls"</param>
+				<param name="bufferSize">4096</param>
+			</result>
+		</action>
+		<action name="GDownloadAction" class="GDownloadAction">
+			<result type="stream">
+				<param name="contentType">application/vnd.ms-excel;charset=UTF-8</param>
+				<param name="inputName">downloadFile</param>
+				<param name="contentDisposition">attachment;filename="goods.xls"</param>
+				<param name="bufferSize">4096</param>
+			</result>
+		</action>
+		<action name="TsDownloadAction" class="TsDownloadAction">
+			<result type="stream">
+				<param name="contentType">application/vnd.ms-excel;charset=UTF-8</param>
+				<param name="inputName">downloadFile</param>
+				<param name="contentDisposition">attachment;filename="timeSale.xls"</param>
+				<param name="bufferSize">4096</param>
+			</result>
+		</action>
 	</package>
 </struts>    

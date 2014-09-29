@@ -12,9 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class EncodeFilter implements Filter {
-
+	 private FilterConfig filterConfig=null;
 	public void destroy() {
-		// TODO Auto-generated method stub
+		 this.filterConfig=null;
 
 	}
 
@@ -22,14 +22,13 @@ public class EncodeFilter implements Filter {
 			FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest)req; 
 		HttpServletResponse response = (HttpServletResponse)resp;
-		request.setCharacterEncoding("utf-8");
-		response.setCharacterEncoding("utf-8");
+		request.setCharacterEncoding(this.filterConfig.getInitParameter("encoding"));
+		response.setCharacterEncoding(this.filterConfig.getInitParameter("encoding"));
 		chain.doFilter(request, response);
 	}
 
-	public void init(FilterConfig arg0) throws ServletException {
-		// TODO Auto-generated method stub
-
-	}
+	public void init(FilterConfig filterConfig) throws ServletException {
+		  this.filterConfig=filterConfig;
+		 }
 
 }

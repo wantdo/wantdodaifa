@@ -1,5 +1,8 @@
 package com.wantdo.pojo;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 /**
  * Sale entity. @author MyEclipse Persistence Tools
  */
@@ -14,10 +17,11 @@ public class Sale implements java.io.Serializable {
 	private String orderGoodsNum;
 	private String orderClientNum;
 	private String clientPrice;
-	private String saleTime;
-	private String nowTime;
+	private Date saleTime;
+	private Timestamp nowTime;
 	private String shopName;
 	private String platform;
+	private String version;
 
 	// Constructors
 
@@ -27,8 +31,8 @@ public class Sale implements java.io.Serializable {
 
 	/** full constructor */
 	public Sale(String sales, String orderQuantity, String orderGoodsNum,
-			String orderClientNum, String clientPrice, String saleTime,
-			String nowTime, String shopName, String platform) {
+			String orderClientNum, String clientPrice, Date saleTime,
+			Timestamp nowTime, String shopName, String platform, String version) {
 		this.sales = sales;
 		this.orderQuantity = orderQuantity;
 		this.orderGoodsNum = orderGoodsNum;
@@ -38,6 +42,7 @@ public class Sale implements java.io.Serializable {
 		this.nowTime = nowTime;
 		this.shopName = shopName;
 		this.platform = platform;
+		this.version = version;
 	}
 
 	// Property accessors
@@ -90,19 +95,19 @@ public class Sale implements java.io.Serializable {
 		this.clientPrice = clientPrice;
 	}
 
-	public String getSaleTime() {
+	public Date getSaleTime() {
 		return this.saleTime;
 	}
 
-	public void setSaleTime(String saleTime) {
+	public void setSaleTime(Date saleTime) {
 		this.saleTime = saleTime;
 	}
 
-	public String getNowTime() {
+	public Timestamp getNowTime() {
 		return this.nowTime;
 	}
 
-	public void setNowTime(String nowTime) {
+	public void setNowTime(Timestamp nowTime) {
 		this.nowTime = nowTime;
 	}
 
@@ -120,6 +125,14 @@ public class Sale implements java.io.Serializable {
 
 	public void setPlatform(String platform) {
 		this.platform = platform;
+	}
+
+	public String getVersion() {
+		return this.version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
 	}
 
 }
