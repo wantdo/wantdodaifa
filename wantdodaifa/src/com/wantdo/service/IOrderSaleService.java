@@ -13,8 +13,12 @@ public interface IOrderSaleService {
 	public void save(OrderSale OrderSale);
 
 	public List<OrderSale> findbyTimeAndName(Date saleTime,String shopName);
-
+	
 	public List<OrderSale> findbyTimeAndNameAndClient(Date saleTime,
 			String shopName);
+	
+	public void update(OrderSale OrderSale);
+
+	public List<OrderSale> findbyOrderNo(String orderNo);
 	
 }

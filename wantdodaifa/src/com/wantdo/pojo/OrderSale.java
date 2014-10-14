@@ -16,6 +16,7 @@ public class OrderSale implements java.io.Serializable {
 	private Date saleTime;
 	private String clientName;
 	private String goodsNum;
+	private String orderNo;
 
 	// Constructors
 
@@ -25,12 +26,13 @@ public class OrderSale implements java.io.Serializable {
 
 	/** full constructor */
 	public OrderSale(String sales, String shopName, Date saleTime,
-			String clientName, String goodsNum) {
+			String clientName, String goodsNum, String orderNo) {
 		this.sales = sales;
 		this.shopName = shopName;
 		this.saleTime = saleTime;
 		this.clientName = clientName;
 		this.goodsNum = goodsNum;
+		this.orderNo = orderNo;
 	}
 
 	// Property accessors
@@ -81,6 +83,14 @@ public class OrderSale implements java.io.Serializable {
 
 	public void setGoodsNum(String goodsNum) {
 		this.goodsNum = goodsNum;
+	}
+
+	public String getOrderNo() {
+		return this.orderNo;
+	}
+
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
 	}
 
 }

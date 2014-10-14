@@ -31,6 +31,7 @@ public class OrderSaleDAO extends HibernateDaoSupport implements IOrderSaleDAO{
 	public static final String SHOP_NAME = "shopName";
 	public static final String CLIENT_NAME = "clientName";
 	public static final String GOODS_NUM = "goodsNum";
+	public static final String ORDER_NO = "orderNo";
 
 	protected void initDao() {
 		// do nothing
@@ -112,6 +113,10 @@ public class OrderSaleDAO extends HibernateDaoSupport implements IOrderSaleDAO{
 		return findByProperty(GOODS_NUM, goodsNum);
 	}
 
+	public List findByOrderNo(Object orderNo) {
+		return findByProperty(ORDER_NO, orderNo);
+	}
+
 	public List findAll() {
 		log.debug("finding all OrderSale instances");
 		try {
@@ -162,7 +167,6 @@ public class OrderSaleDAO extends HibernateDaoSupport implements IOrderSaleDAO{
 		return (OrderSaleDAO) ctx.getBean("OrderSaleDAO");
 	}
 	
-	
 	public List<OrderSale> getData(String json) {
 		List<OrderSale> orderSales = JSON.parseArray(json, OrderSale.class);
 		return orderSales;
@@ -172,7 +176,7 @@ public class OrderSaleDAO extends HibernateDaoSupport implements IOrderSaleDAO{
 	public List<OrderSale> findbyTimeAndName(Date saleTime, String shopName) {
 		log.debug("finding all OrderSale instances");
 		try {
-			String queryString = "from OrderSale as os where os.saleTime=? and os.shopName=?";
+			String queryString = "from OrderSale as os where os.saleTime=? and ? like os.shopName+'%'";
 			return getHibernateTemplate().find(queryString,new Object[]{saleTime,shopName});
 		} catch (RuntimeException re) {
 			log.error("find all failed", re);
@@ -185,7 +189,7 @@ public class OrderSaleDAO extends HibernateDaoSupport implements IOrderSaleDAO{
 			String shopName) {
 		log.debug("finding all OrderSale instances");
 		try {
-			String queryString = "select DISTINCT os.clientName from OrderSale as os where os.saleTime=? and os.shopName=?";
+			String queryString = "select DISTINCT os.clientName from OrderSale as os where os.saleTime=? and ? like os.shopName+'%'";
 			return getHibernateTemplate().find(queryString,new Object[]{saleTime,shopName});
 			
 		} catch (RuntimeException re) {
@@ -193,4 +197,29 @@ public class OrderSaleDAO extends HibernateDaoSupport implements IOrderSaleDAO{
 			throw re;
 		}
 	}
+
+	public void update(OrderSale orderSale) {
+        log.debug("updating OrderSale instance");
+        try {
+            getHibernateTemplate().update(orderSale);
+            log.debug("update successful");
+        } catch (RuntimeException re) {
+            log.error("update failed", re);
+            throw re;
+        }
+    }
+
+	@Override
+	public List<OrderSale> findbyOrderNo(String orderNo) {
+		log.debug("finding all OrderSale instances");
+		try {
+			String queryString = "from OrderSale as os where os.orderNo=?";
+			return getHibernateTemplate().find(queryString,new Object[]{orderNo});
+			
+		} catch (RuntimeException re) {
+			log.error("find all failed", re);
+			throw re;
+		}
+	}
+
 }

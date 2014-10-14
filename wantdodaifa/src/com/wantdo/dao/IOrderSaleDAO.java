@@ -16,4 +16,8 @@ public interface IOrderSaleDAO {
 	public List<OrderSale> findbyTimeAndNameAndClient(Date saleTime,
 			String shopName);
 	
+	public void update(OrderSale OrderSale);
+
+	public List<OrderSale> findbyOrderNo(String orderNo);
+	
 }

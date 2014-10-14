@@ -168,6 +168,17 @@ public class GoodsDAO extends HibernateDaoSupport implements IGoodsDAO{
 		return (GoodsDAO) ctx.getBean("GoodsDAO");
 	}
 	
+	public void update(GoodsDAO goods) {
+        log.debug("updating GoodsDAO instance");
+        try {
+            getHibernateTemplate().update(goods);
+            log.debug("update successful");
+        } catch (RuntimeException re) {
+            log.error("update failed", re);
+            throw re;
+        }
+    }
+	
 	@Override
 	public List<Goods> getData(String json) {
 		List<Goods> goodss = JSON.parseArray(json, Goods.class);

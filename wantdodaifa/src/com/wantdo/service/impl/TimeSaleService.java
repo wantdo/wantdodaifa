@@ -50,4 +50,10 @@ public class TimeSaleService implements ITimeSaleService{
 		return timeSaleDAO.getByOpDate(startTime, endTime);
 	}
 
+	@Override
+	public void update(TimeSale ts) {
+		timeSaleDAO.update(ts);
+		
+	}
+
 }

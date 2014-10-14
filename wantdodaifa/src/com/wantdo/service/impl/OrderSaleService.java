@@ -42,6 +42,19 @@ public class OrderSaleService implements IOrderSaleService{
 		// TODO Auto-generated method stub
 		return orderSaleDAO.findbyTimeAndNameAndClient(saleTime, shopName);
 	}
+
+	@Override
+	public void update(OrderSale OrderSale) {
+		// TODO Auto-generated method stub
+		orderSaleDAO.update(OrderSale);
+	}
+
+	@Override
+	public List<OrderSale> findbyOrderNo(String orderNo) {
+		// TODO Auto-generated method stub
+		return orderSaleDAO.findbyOrderNo(orderNo);
+	}
+
 	
 	
 }

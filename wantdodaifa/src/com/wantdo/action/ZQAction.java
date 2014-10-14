@@ -1,21 +1,14 @@
 package com.wantdo.action;
 
-import java.io.PrintWriter;
 import java.sql.Timestamp;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.catalina.connector.Response;
-import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.wantdo.pojo.Flow;
 import com.wantdo.pojo.FlowSource;
 import com.wantdo.pojo.Goods;
+import com.wantdo.pojo.HotGoodsRank;
 import com.wantdo.pojo.OrderSale;
 import com.wantdo.pojo.Sale;
 import com.wantdo.pojo.TimeSale;
@@ -23,6 +16,7 @@ import com.wantdo.service.ICusShopsService;
 import com.wantdo.service.IFlowService;
 import com.wantdo.service.IFlowSourceService;
 import com.wantdo.service.IGoodsService;
+import com.wantdo.service.IHotGoodsRankService;
 import com.wantdo.service.IOrderSaleService;
 import com.wantdo.service.ISaleService;
 import com.wantdo.service.ITimeSaleService;
@@ -35,6 +29,7 @@ public class ZQAction extends ActionSupport{
 	private String zhibiao;
 	private String laiyuan;
 	private String flowInfo;
+	private String hotInfo;
 	private String variable;
 	private ISaleService saleService;
 	private IFlowService flowService;
@@ -44,11 +39,13 @@ public class ZQAction extends ActionSupport{
 	private IOrderSaleService orderSaleService;
 	private ICusShopsService cusShopsService;
 	private IWspShopsService wspShopsService;
+	private IHotGoodsRankService hotGoodsRankService;
 	private List<Sale> saleList;
 	private List<Flow> flowList;
 	private List<TimeSale> timeSaleList;
 	private List<FlowSource> flowSourceList;
 	private List<Goods> goodsList;
+	private List<HotGoodsRank> hotGoodsRankList;
 //private InputStream inputStream;
 	
 		@SuppressWarnings("deprecation")
@@ -67,13 +64,57 @@ public class ZQAction extends ActionSupport{
 								Date saleTime = s.getSaleTime();
 								String shopName = s.getShopName();
 								List<Sale> sList = saleService.findbyTimeAndName(saleTime,shopName);
+								List<OrderSale> orderSale = orderSaleService.findbyTimeAndName(saleTime, shopName);
+								List<OrderSale> clientList = orderSaleService.findbyTimeAndNameAndClient(saleTime, shopName);
+								int clientNum = clientList.size();
+								double total=0.00;
+								int orderNum=0;
+								int goodsNum=0;
+								for(OrderSale os : orderSale){
+									total += Double.parseDouble(os.getSales());
+									orderNum++;
+									goodsNum += Integer.parseInt(os.getGoodsNum());
+								}
+								double clientPrice = total/clientNum;
+								if(clientNum<orderNum){
+									clientNum = orderNum;
+									clientPrice = total/clientNum;
+								}
+								int temp1 = (int)Math.round(total * 100); //小数点后两位前移，并四舍五入 
+								total = (double)temp1 / 100.00; //还原小数点后两位
+								int temp2 = (int)Math.round(clientPrice * 100); //小数点后两位前移，并四舍五入 
+								clientPrice = (double)temp2 / 100.00; //还原小数点后两位
+								
+								String sales = String.valueOf(total);
+								String orderQuantity = String.valueOf(orderNum);
+								String cPrice = String.valueOf(clientPrice);
+								String cNum = String.valueOf(clientNum);
+								String orderGoodsNum = String.valueOf(goodsNum);
+								
+								s.setSales(sales);
+								s.setOrderQuantity(orderQuantity);
+								s.setClientPrice(cPrice);
+								s.setOrderGoodsNum(orderGoodsNum);
+								s.setOrderClientNum(cNum);
+								
 								if(sList.size() == 0){
 									saleService.save(s);
 									return SUCCESS;
+								}else{
+									for(Sale sa : sList){
+										sa.setSales(sales);
+										sa.setOrderQuantity(orderQuantity);
+										sa.setClientPrice(cPrice);
+										sa.setOrderGoodsNum(orderGoodsNum);
+										sa.setOrderClientNum(cNum);
+										
+										saleService.update(sa);
+									}
 								}
 							}else{
-								return "error";
-							}
+							return "error";
+						}
+					
 						}
 					}
 					//======================================================京东流量=======================================================
@@ -91,6 +132,19 @@ public class ZQAction extends ActionSupport{
 								List<Flow> fList = flowService.findbyTimeAndName(flowTime,shopName);
 								if(fList.size()==0){
 									flowService.save(f);
+								}else{
+									for(Flow fl : fList){
+										fl.setAvgPaceTime(f.getAvgPaceTime());
+										fl.setNowTime(f.getNowTime());
+										fl.setFirstPaymentRate(f.getFirstPaymentRate());
+										fl.setGoodsVolume(f.getGoodsVolume());
+										fl.setShopDealRate(f.getShopDealRate());
+										fl.setShopVolume(f.getShopVolume());
+										fl.setThirtyCustomerRetention(f.getThirtyCustomerRetention());
+										fl.setThirtyRepeatPurchaseRate(f.getThirtyRepeatPurchaseRate());
+										fl.setVisits(f.getVisits());
+										flowService.update(fl);
+									}
 								}
 							}else{
 								return "error";
@@ -112,6 +166,18 @@ public class ZQAction extends ActionSupport{
 								List<TimeSale> tsList = timeSaleService.findbyTimeAndName(times,shopName,saleTime);
 								if(tsList.size()==0){
 									timeSaleService.save(t);
+								}else{
+									for(TimeSale ts : tsList){
+										ts.setNowTime(t.getNowTime());
+										ts.setOrderClientNum(t.getOrderClientNum());
+										ts.setOrderGoodsNum(t.getOrderGoodsNum());
+										ts.setOrderQuantity(t.getOrderQuantity());
+										ts.setPageviews(t.getPageviews());
+										ts.setSales(t.getSales());
+										ts.setVisitors(t.getVisitors());
+										ts.setVisits(t.getVisits());
+										timeSaleService.update(ts);
+									}
 								}
 							}else{
 								return "error";
@@ -141,7 +207,6 @@ public class ZQAction extends ActionSupport{
 				if(variable.equals("jdflowSourcepost")){
 				//======================================================京东流量来源=======================================================
 					if(!laiyuan.equals("") && laiyuan != null){
-//						System.out.println(laiyuan);
 						laiyuan = laiyuan.replaceAll("\\*","%");
 						flowSourceList = flowSourceService.getData(laiyuan);
 						for(FlowSource fs : flowSourceList) {
@@ -155,6 +220,16 @@ public class ZQAction extends ActionSupport{
 								List<FlowSource> fsList = flowSourceService.findbyTimeAndName(flowSourceTime,shopName,flowSource);
 								if(fsList.size()==0){
 									flowSourceService.save(fs);
+								}else{
+									for(FlowSource fls : fsList){
+										fls.setFlowSource(fs.getFlowSource());
+										fls.setLandPageView(fs.getLandPageView());
+										fls.setLandPageViewAccounted(fs.getLandPageViewAccounted());
+										fls.setNowTime(fs.getNowTime());
+										fls.setPageView(fs.getPageView());
+										fls.setPageViewAccounted(fs.getPageViewAccounted());
+										flowSourceService.update(fls);
+									}
 								}
 							}else{
 								return "error";
@@ -196,7 +271,51 @@ public class ZQAction extends ActionSupport{
 						}
 					}
 				}
-			}
+				//======================================================京东热销商品排行=======================================================
+				if(variable.equals("jdhotGoodspost")){
+					if(!hotInfo.equals("") && hotInfo != null){
+						
+						hotInfo = hotInfo.replaceAll("\\*","%");
+						System.out.println(hotInfo);
+						hotGoodsRankList = hotGoodsRankService.getData(hotInfo);
+						for(HotGoodsRank h : hotGoodsRankList) {
+							if(!"undefined".equals(h.getPrice()) && h.getPrice() != null){
+								Date captureDate = h.getCaptureDate();
+								String goodsName = h.getGoodsName();
+								String shopName = h.getShopName();
+								String flowSource = h.getFlowSource();
+								String avgVisitNum = h.getAvgVisitNum();
+								String bounceRate = h.getBounceRate();
+								
+								List<HotGoodsRank> hgrList1 = hotGoodsRankService.findbyTimeAndName(goodsName,captureDate,shopName,flowSource,avgVisitNum,bounceRate);
+								if(hgrList1.size()==0){
+									hotGoodsRankService.save(h);
+								}else{
+									for(HotGoodsRank hgr : hgrList1){
+										hgr.setFlowSource(h.getBounceRate());
+										hgr.setAvgVisitNum(h.getAvgVisitNum());
+										hgr.setCaptureTime(h.getCaptureTime());
+										hgr.setDealGoodsIndex(h.getDealGoodsIndex());
+										hgr.setFlowSource(h.getFlowSource());
+										hgr.setGoodsUrl(h.getGoodsUrl());
+										hgr.setLinkChangeRate(h.getLinkChangeRate());
+										hgr.setPrice(h.getPrice());
+										hgr.setPviews(h.getPviews());
+										hgr.setPvisits(h.getPvisits());
+										hgr.setRank(h.getRank());
+										hgr.setCaptureTime(h.getCaptureTime());
+										
+										hotGoodsRankService.update(hgr);
+									}
+								}
+								
+							}else{
+								return "error";
+							}
+						}
+					}
+				}
+				}
 			//当当
 			if(variable.contains("dd")){
 				//======================================================当当销量=======================================================
@@ -210,13 +329,57 @@ public class ZQAction extends ActionSupport{
 								Date saleTime = s.getSaleTime();
 								String shopName = s.getShopName();
 								List<Sale> sList = saleService.findbyTimeAndName(saleTime,shopName);
+								List<OrderSale> orderSale = orderSaleService.findbyTimeAndName(saleTime, shopName);
+								List<OrderSale> clientList = orderSaleService.findbyTimeAndNameAndClient(saleTime, shopName);
+								int clientNum = clientList.size();
+								double total=0.00;
+								int orderNum=0;
+								int goodsNum=0;
+								for(OrderSale os : orderSale){
+									total += Double.parseDouble(os.getSales());
+									orderNum++;
+									goodsNum += Integer.parseInt(os.getGoodsNum());
+								}
+								double clientPrice = total/clientNum;
+								if(clientNum<orderNum){
+									clientNum = orderNum;
+									clientPrice = total/clientNum;
+								}
+								int temp1 = (int)Math.round(total * 100); //小数点后两位前移，并四舍五入 
+								total = (double)temp1 / 100.00; //还原小数点后两位
+								int temp2 = (int)Math.round(clientPrice * 100); //小数点后两位前移，并四舍五入 
+								clientPrice = (double)temp2 / 100.00; //还原小数点后两位
+								
+								String sales = String.valueOf(total);
+								String orderQuantity = String.valueOf(orderNum);
+								String cPrice = String.valueOf(clientPrice);
+								String cNum = String.valueOf(clientNum);
+								String orderGoodsNum = String.valueOf(goodsNum);
+								
+								s.setSales(sales);
+								s.setOrderQuantity(orderQuantity);
+								s.setClientPrice(cPrice);
+								s.setOrderGoodsNum(orderGoodsNum);
+								s.setOrderClientNum(cNum);
+								
 								if(sList.size() == 0){
 									saleService.save(s);
 									return SUCCESS;
+								}else{
+									for(Sale sa : sList){
+										sa.setSales(sales);
+										sa.setOrderQuantity(orderQuantity);
+										sa.setClientPrice(cPrice);
+										sa.setOrderGoodsNum(orderGoodsNum);
+										sa.setOrderClientNum(cNum);
+										
+										saleService.update(sa);
+									}
 								}
 							}else{
-								return "error";
-							}
+							return "error";
+						}
+					
 						}
 					}
 				
@@ -235,6 +398,24 @@ public class ZQAction extends ActionSupport{
 								List<Flow> fList = flowService.findbyTimeAndName(flowTime,shopName);
 								if(fList.size()==0){
 									flowService.save(f);
+								}else{
+									for(Flow fl : fList){
+										fl.setAvgPaceTime(f.getAvgPaceTime());
+										fl.setNowTime(f.getNowTime());
+										fl.setAvgVisitDepth(f.getAvgVisitDepth());
+										fl.setBackVisitorsRate(f.getBackVisitorsRate());
+										fl.setBounceRate(f.getBounceRate());
+										fl.setFirstPaymentRate(f.getFirstPaymentRate());
+										fl.setGoodsVolume(f.getGoodsVolume());
+										fl.setPageviews(f.getPageviews());
+										fl.setShopDealRate(f.getShopDealRate());
+										fl.setShopVolume(f.getShopVolume());
+										fl.setThirtyCustomerRetention(f.getThirtyCustomerRetention());
+										fl.setThirtyRepeatPurchaseRate(f.getThirtyRepeatPurchaseRate());
+										fl.setVisitors(f.getVisitors());
+										fl.setVisits(f.getVisits());
+										flowService.update(fl);
+									}
 								}
 							}else{
 								return "error";
@@ -261,6 +442,18 @@ public class ZQAction extends ActionSupport{
 								List<TimeSale> tsList = timeSaleService.findbyTimeAndName(times,shopName,saleTime);
 								if(tsList.size()==0){
 									timeSaleService.save(t);
+								}else{
+									for(TimeSale ts : tsList){
+										ts.setNowTime(t.getNowTime());
+										ts.setOrderClientNum(t.getOrderClientNum());
+										ts.setOrderGoodsNum(t.getOrderGoodsNum());
+										ts.setOrderQuantity(t.getOrderQuantity());
+										ts.setPageviews(t.getPageviews());
+										ts.setSales(t.getSales());
+										ts.setVisitors(t.getVisitors());
+										ts.setVisits(t.getVisits());
+										timeSaleService.update(ts);
+									}
 								}
 							}else{
 								return "error";
@@ -285,10 +478,16 @@ public class ZQAction extends ActionSupport{
 								List<FlowSource> fsList = flowSourceService.findbyTimeAndName(flowSourceTime,shopName,flowSource);
 								if(fsList.size()==0){
 									flowSourceService.save(fs);
+								}else{
+									for(FlowSource fls : fsList){
+										fls.setLandPageView(fs.getLandPageView());
+										fls.setLandPageViewAccounted(fs.getLandPageViewAccounted());
+										fls.setNowTime(fs.getNowTime());
+										fls.setPageView(fs.getPageView());
+										fls.setPageViewAccounted(fs.getPageViewAccounted());
+										flowSourceService.update(fls);
+									}
 								}
-	//								else{
-	//									return "repeat";
-	//								}
 							}else{
 								return "error";
 							}
@@ -306,17 +505,6 @@ public class ZQAction extends ActionSupport{
 						
 						saleList = saleService.getData(xiaoliang);
 						for(Sale s : saleList) {
-//							if(!"undefined".equals(s.getSales()) && s.getSales() !=null && s.getSales() !="--"){
-//								Date saleTime = s.getSaleTime();
-//								String shopName = s.getShopName();
-//								List<Sale> sList = saleService.findbyTimeAndName(saleTime,shopName);
-//								if(sList.size() == 0){
-//									saleService.save(s);
-//								}
-//							}else{
-//								return "error";
-//							}
-
 							if(!"undefined".equals(s.getSales()) && s.getSales() !=null && s.getSales() !="--" && s.getSales() !="--"){
 								Date saleTime = s.getSaleTime();
 								String shopName = s.getShopName();
@@ -335,7 +523,13 @@ public class ZQAction extends ActionSupport{
 								double clientPrice = total/clientNum;
 								if(clientNum<orderNum){
 									clientNum = orderNum;
+									clientPrice = total/clientNum;
 								}
+								int temp1 = (int)Math.round(total * 100); //小数点后两位前移，并四舍五入 
+								total = (double)temp1 / 100.00; //还原小数点后两位
+								int temp2 = (int)Math.round(clientPrice * 100); //小数点后两位前移，并四舍五入 
+								clientPrice = (double)temp2 / 100.00; //还原小数点后两位
+								
 								String sales = String.valueOf(total);
 								String orderQuantity = String.valueOf(orderNum);
 								String cPrice = String.valueOf(clientPrice);
@@ -385,6 +579,24 @@ public class ZQAction extends ActionSupport{
 								List<Flow> fList = flowService.findbyTimeAndName(flowTime,shopName);
 								if(fList.size()==0){
 									flowService.save(f);
+								}else{
+									for(Flow fl : fList){
+										fl.setAvgPaceTime(f.getAvgPaceTime());
+										fl.setNowTime(f.getNowTime());
+										fl.setAvgVisitDepth(f.getAvgVisitDepth());
+										fl.setBackVisitorsRate(f.getBackVisitorsRate());
+										fl.setBounceRate(f.getBounceRate());
+										fl.setFirstPaymentRate(f.getFirstPaymentRate());
+										fl.setGoodsVolume(f.getGoodsVolume());
+										fl.setPageviews(f.getPageviews());
+										fl.setShopDealRate(f.getShopDealRate());
+										fl.setShopVolume(f.getShopVolume());
+										fl.setThirtyCustomerRetention(f.getThirtyCustomerRetention());
+										fl.setThirtyRepeatPurchaseRate(f.getThirtyRepeatPurchaseRate());
+										fl.setVisitors(f.getVisitors());
+										fl.setVisits(f.getVisits());
+										flowService.update(fl);
+									}
 								}
 							}else{
 								return "error";
@@ -412,6 +624,18 @@ public class ZQAction extends ActionSupport{
 								List<TimeSale> tsList = timeSaleService.findbyTimeAndName(times,shopName,saleTime);
 								if(tsList.size()==0){
 									timeSaleService.save(t);
+								}else{
+									for(TimeSale ts : tsList){
+										ts.setNowTime(t.getNowTime());
+										ts.setOrderClientNum(t.getOrderClientNum());
+										ts.setOrderGoodsNum(t.getOrderGoodsNum());
+										ts.setOrderQuantity(t.getOrderQuantity());
+										ts.setPageviews(t.getPageviews());
+										ts.setSales(t.getSales());
+										ts.setVisitors(t.getVisitors());
+										ts.setVisits(t.getVisits());
+										timeSaleService.update(ts);
+									}
 								}
 							}else{
 								return "error";
@@ -437,6 +661,16 @@ public class ZQAction extends ActionSupport{
 								List<Sale> sList = saleService.findbyTimeAndName(saleTime,shopName);
 								if(sList.size() == 0){
 									saleService.save(s);
+								}else{
+									for(Sale sa : sList){
+										sa.setNowTime(s.getNowTime());
+										sa.setOrderGoodsNum(s.getOrderGoodsNum());
+										sa.setOrderQuantity(s.getOrderQuantity());
+										sa.setSales(s.getSales());
+										sa.setOrderClientNum(s.getOrderClientNum());
+										sa.setClientPrice(s.getClientPrice());
+										saleService.update(sa);
+									}
 								}
 							}else{
 								return "error";
@@ -459,12 +693,59 @@ public class ZQAction extends ActionSupport{
 								List<Flow> fList = flowService.findbyTimeAndName(flowTime,shopName);
 								if(fList.size()==0){
 									flowService.save(f);
+								}else{
+									for(Flow fl : fList){
+										fl.setNowTime(f.getNowTime());
+										fl.setAvgVisitDepth(f.getAvgVisitDepth());
+										fl.setBackVisitorsRate(f.getBackVisitorsRate());
+										fl.setBounceRate(f.getBounceRate());
+										fl.setFirstPaymentRate(f.getFirstPaymentRate());
+										fl.setGoodsVolume(f.getGoodsVolume());
+										fl.setPageviews(f.getPageviews());
+										fl.setShopDealRate(f.getShopDealRate());
+										fl.setShopVolume(f.getShopVolume());
+										fl.setThirtyCustomerRetention(f.getThirtyCustomerRetention());
+										fl.setThirtyRepeatPurchaseRate(f.getThirtyRepeatPurchaseRate());
+										fl.setVisitors(f.getVisitors());
+										fl.setVisits(f.getVisits());
+										flowService.update(fl);
+									}
 								}
 							}else{
 								return "error";
 							}
 						}
 					}
+				}
+				if(variable.equals("tbtmsalespost")){
+					
+					//======================================================淘宝销量=======================================================
+					if(!xiaoliang.equals("") && xiaoliang != null){
+						
+						//					System.out.println(xiaoliang);
+						
+						saleList = saleService.getData(xiaoliang);
+						for(Sale s : saleList) {
+							if(!"undefined".equals(s.getSales()) && s.getSales() !=null && s.getSales() !="--"){
+								Date saleTime = s.getSaleTime();
+								String shopName = s.getShopName();
+								List<Sale> sList = saleService.findbyTimeAndName(saleTime,shopName);
+								if(sList.size() == 0){
+									saleService.save(s);
+								}else if(sList.size() == 1){
+									for(Sale sa : sList){
+										sa.setSales(s.getSales());
+										sa.setOrderClientNum(s.getOrderClientNum());
+										sa.setClientPrice(s.getClientPrice());
+										saleService.update(sa);
+									}
+								}
+							}else{
+								return "error";
+							}
+						}
+					}
+					
 				}
 				if(variable.equals("tbflowpost")){
 				
@@ -525,7 +806,13 @@ public class ZQAction extends ActionSupport{
 								double clientPrice = total/clientNum;
 								if(clientNum<orderNum){
 									clientNum = orderNum;
+									clientPrice = total/clientNum;
 								}
+								int temp1 = (int)Math.round(total * 100); //小数点后两位前移，并四舍五入 
+								total = (double)temp1 / 100.00; //还原小数点后两位
+								int temp2 = (int)Math.round(clientPrice * 100); //小数点后两位前移，并四舍五入 
+								clientPrice = (double)temp2 / 100.00; //还原小数点后两位
+								
 								String sales = String.valueOf(total);
 								String orderQuantity = String.valueOf(orderNum);
 								String cPrice = String.valueOf(clientPrice);
@@ -559,7 +846,6 @@ public class ZQAction extends ActionSupport{
 					}
 				}
 			}
-			
 			return SUCCESS;
 		}
 		
@@ -749,6 +1035,30 @@ public class ZQAction extends ActionSupport{
 
 	public void setOrderSaleService(IOrderSaleService orderSaleService) {
 		this.orderSaleService = orderSaleService;
+	}
+
+	public IHotGoodsRankService getHotGoodsRankService() {
+		return hotGoodsRankService;
+	}
+
+	public void setHotGoodsRankService(IHotGoodsRankService hotGoodsRankService) {
+		this.hotGoodsRankService = hotGoodsRankService;
+	}
+
+	public List<HotGoodsRank> getHotGoodsRankList() {
+		return hotGoodsRankList;
+	}
+
+	public void setHotGoodsRankList(List<HotGoodsRank> hotGoodsRankList) {
+		this.hotGoodsRankList = hotGoodsRankList;
+	}
+
+	public String getHotInfo() {
+		return hotInfo;
+	}
+
+	public void setHotInfo(String hotInfo) {
+		this.hotInfo = hotInfo;
 	}
 
 

@@ -13,6 +13,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import com.alibaba.fastjson.JSON;
 import com.wantdo.dao.IFlowSourceDAO;
+import com.wantdo.pojo.Flow;
 import com.wantdo.pojo.FlowSource;
 
 /**
@@ -184,6 +185,17 @@ public class FlowSourceDAO extends HibernateDaoSupport  implements IFlowSourceDA
 	public static FlowSourceDAO getFromApplicationContext(ApplicationContext ctx) {
 		return (FlowSourceDAO) ctx.getBean("FlowSourceDAO");
 	}
+	
+	public void update(FlowSource flowSource) {
+        log.debug("updating FlowSource instance");
+        try {
+            getHibernateTemplate().update(flowSource);
+            log.debug("update successful");
+        } catch (RuntimeException re) {
+            log.error("update failed", re);
+            throw re;
+        }
+    }
 	@Override
 	public List<FlowSource> getData(String json) {
 		List<FlowSource> flowSources = JSON.parseArray(json, FlowSource.class);

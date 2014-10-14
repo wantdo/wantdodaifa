@@ -17,4 +17,6 @@ public interface ITimeSaleService {
 
 	public List<TimeSale> getByOpDate(String startTime, String endTime) throws Exception;
 
+	public void update(TimeSale ts);
+
 }

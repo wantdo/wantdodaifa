@@ -18,4 +18,6 @@ public interface IFlowSourceService {
 
 	public List<FlowSource> getByOpDate(String startTime, String endTime) throws Exception;
 
+	public void update(FlowSource fs);
+
 }

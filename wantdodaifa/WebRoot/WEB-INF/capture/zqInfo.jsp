@@ -22,11 +22,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script src="<%=basePath %>js/bootstrap.min.js"></script>
 	<script src="<%=request.getContextPath()%>/js/My97DatePicker/WdatePicker.js"  type="text/javascript"></script>
  	<script language="JavaScript">
-  /*  function closepage(){
+    function closepage(){
        window.opener=null;
        window.open("","_self");
        setTimeout("self.close()",2000);
-     } */
+     } 
      function timeQuery(){
 	    	if (document.getElementById("startTime").value==""||document.getElementById("endTime").value=="") {
 				alert("请选择日期后查询");
@@ -100,8 +100,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	.dt{width:150px;height:30px;font:16px 'Microsoft YaHei',微软雅黑,Verdana,arial,sans-serif;}
   </style>
   </head>
-  
+  <s:if test="orderSaleList != null">
   <body onload="closepage()">
+  </s:if>
+  <s:if test="orderSaleList == null">
+  <body>
+  </s:if>
   <div class="alert alert-success" style="font-size:x-large;">  恭喜您，抓取数据成功！ <br>
 </div>
 <s:if test="orderSaleList == null">
@@ -246,14 +250,39 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <div style="padding: 20px">
 	<table class="table table-bordered">
 		<caption align="top" style="font-size: x-large;">订单金额表</caption>  
-		<thead><tr style="background-color:aqua;"><td>店铺名称</td><td>总金额</td><td>商品数</td><td>客户名</td><td>数据日期</td></tr></thead>
+		<thead><tr style="background-color:aqua;"><td>店铺名称</td><td>订单编号</td><td>总金额</td><td>商品数</td><td>客户名</td><td>数据日期</td></tr></thead>
  	 	<s:iterator value="orderSaleList" id="orderSaleList" >
 	 		<tr style="background-color:threedface;">
 	 			<td><s:property value="#orderSaleList.shopName"/></td>
+	 			<td><s:property value="#orderSaleList.orderNo"/></td>
 	 			<td><s:property value="#orderSaleList.sales"/></td>
 	 			<td><s:property value="#orderSaleList.goodsNum"/></td>
 	 			<td><s:property value="#orderSaleList.clientName"/></td>
 	 			<td><s:property value="#orderSaleList.saleTime"/></td>
+	 		</tr>
+		</s:iterator>
+	</table>
+  </div>
+  </s:if>
+  <s:if test="hotGoodsRankList != null">
+  <div style="padding: 20px">
+	<table class="table table-bordered">
+		<caption align="top" style="font-size: x-large;">订单金额表</caption>  
+		<thead><tr style="background-color:lime;"><td>店铺名称</td><td>排行</td><td>商品名称</td><td>价格</td><td>成交商品指数</td><td>环比变化率</td><td>流量来源</td><td>商品页浏览量</td><td>浏览量占比</td><td>商品页访问次数</td><td>平均浏览次数</td><td>抓取日期</td></tr></thead>
+ 	 	<s:iterator value="hotGoodsRankList" id="hotGoodsRankList" >
+	 		<tr style="background-color:threedface;">
+	 			<td><s:property value="#hotGoodsRankList.shopName"/></td>
+	 			<td><s:property value="#hotGoodsRankList.rank"/></td>
+	 			<td><s:property value="#hotGoodsRankList.goodsName"/></td>
+	 			<td><s:property value="#hotGoodsRankList.price"/></td>
+	 			<td><s:property value="#hotGoodsRankList.dealGoodsIndex"/></td>
+	 			<td><s:property value="#hotGoodsRankList.linkChangeRate"/></td>
+	 			<td><s:property value="#hotGoodsRankList.flowSource"/></td>
+	 			<td><s:property value="#hotGoodsRankList.pviews"/></td>
+	 			<td><s:property value="#hotGoodsRankList.bounceRate"/></td>
+	 			<td><s:property value="#hotGoodsRankList.pvisits"/></td>
+	 			<td><s:property value="#hotGoodsRankList.avgVisitNum"/></td>
+	 			<td><s:property value="#hotGoodsRankList.captureTime"/></td>
 	 		</tr>
 		</s:iterator>
 	</table>

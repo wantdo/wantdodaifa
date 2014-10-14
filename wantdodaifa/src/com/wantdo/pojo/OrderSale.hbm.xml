@@ -25,5 +25,8 @@
         <property name="goodsNum" type="java.lang.String">
             <column name="goodsNum" />
         </property>
+        <property name="orderNo" type="java.lang.String">
+            <column name="orderNo" />
+        </property>
     </class>
 </hibernate-mapping>

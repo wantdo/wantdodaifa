@@ -54,4 +54,10 @@ public class FlowSourceService implements IFlowSourceService {
 		return flowSourceDAO.getByOpDate(startTime, endTime) ;
 	}
 
+	@Override
+	public void update(FlowSource fs) {
+		flowSourceDAO.update(fs);
+		
+	}
+
 }

@@ -199,6 +199,18 @@ public class TimeSaleDAO extends HibernateDaoSupport implements ITimeSaleDAO{
 	public static TimeSaleDAO getFromApplicationContext(ApplicationContext ctx) {
 		return (TimeSaleDAO) ctx.getBean("TimeSaleDAO");
 	}
+	
+	@Override
+	public void update(TimeSale timeSale) {
+        log.debug("updating TimeSale instance");
+        try {
+            getHibernateTemplate().update(timeSale);
+            log.debug("update successful");
+        } catch (RuntimeException re) {
+            log.error("update failed", re);
+            throw re;
+        }
+    }
 
 	@Override
 	public List<TimeSale> getData(String json) {
@@ -232,4 +244,5 @@ public class TimeSaleDAO extends HibernateDaoSupport implements ITimeSaleDAO{
 			throw re;
 		}
 	}
+
 }

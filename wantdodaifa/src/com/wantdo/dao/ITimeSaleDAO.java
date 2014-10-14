@@ -15,4 +15,6 @@ public interface ITimeSaleDAO {
 	public List<TimeSale> findbyTimeAndName(String times,String shopName,Date saleTime);
 
 	public List<TimeSale> getByOpDate(String startTime, String endTime) throws Exception;
+
+	public void update(TimeSale ts);
 }

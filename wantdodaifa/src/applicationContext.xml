@@ -36,7 +36,8 @@
 				<value>com/wantdo/pojo/TimeSale.hbm.xml</value>
 				<value>com/wantdo/pojo/CusShops.hbm.xml</value>
 				<value>com/wantdo/pojo/WspShops.hbm.xml</value>
-				<value>com/wantdo/pojo/OrderSale.hbm.xml</value></list>
+				<value>com/wantdo/pojo/OrderSale.hbm.xml</value>
+				<value>com/wantdo/pojo/HotGoodsRank.hbm.xml</value></list>
 		</property></bean>
 	<bean id="OrderJdDAO" class="com.wantdo.dao.impl.OrderJdDAO">
 		<property name="sessionFactory">
@@ -73,6 +74,13 @@
 			<ref bean="sessionFactory" />
 		</property>
 	</bean>
+	
+	<bean id="HotGoodsRankDAO"
+		class="com.wantdo.dao.impl.HotGoodsRankDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
 	<bean id="CusShopsDAO" class="com.wantdo.dao.impl.CusShopsDAO">
 		<property name="sessionFactory">
 			<ref bean="sessionFactory" />
@@ -101,6 +109,9 @@
 		</property> 
 		<property name="timeSaleService">
 			<ref bean="TimeSaleService"/>
+		</property> 
+		<property name="hotGoodsRankService">
+			<ref bean="HotGoodsRankService"/>
 		</property> 
 		<property name="cusShopsService">
 			<ref bean="CusShopsService"/>
@@ -221,6 +232,12 @@
 			<ref bean="OrderJdDAO" />
 		</property>
 	</bean>
+	<bean id="HotGoodsRankService"
+		class="com.wantdo.service.impl.HotGoodsRankService">
+		<property name="hotGoodsRankDAO">
+			<ref bean="HotGoodsRankDAO" />
+		</property>
+	</bean>
 	<bean id="CusShopsService" 
 		class="com.wantdo.service.impl.CusShopsService">
 		<property name="cusShopsDAO">
@@ -232,6 +249,4 @@
 		<property name="wspShopsDAO">
 			<ref bean="WspShopsDAO" />
 		</property>
-	</bean>
-	
-	</beans>
+	</bean></beans>
