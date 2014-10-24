@@ -22,6 +22,7 @@ public class FlowSource implements java.io.Serializable {
 	private String shopName;
 	private String platform;
 	private String version;
+	private String remark;
 
 	// Constructors
 
@@ -33,7 +34,7 @@ public class FlowSource implements java.io.Serializable {
 	public FlowSource(String flowSource, String landPageView,
 			String landPageViewAccounted, String pageView,
 			String pageViewAccounted, Date flowSourceTime, Timestamp nowTime,
-			String shopName, String platform, String version) {
+			String shopName, String platform, String version, String remark) {
 		this.flowSource = flowSource;
 		this.landPageView = landPageView;
 		this.landPageViewAccounted = landPageViewAccounted;
@@ -44,6 +45,7 @@ public class FlowSource implements java.io.Serializable {
 		this.shopName = shopName;
 		this.platform = platform;
 		this.version = version;
+		this.remark = remark;
 	}
 
 	// Property accessors
@@ -134,6 +136,14 @@ public class FlowSource implements java.io.Serializable {
 
 	public void setVersion(String version) {
 		this.version = version;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 }

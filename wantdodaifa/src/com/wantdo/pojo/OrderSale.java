@@ -17,6 +17,8 @@ public class OrderSale implements java.io.Serializable {
 	private String clientName;
 	private String goodsNum;
 	private String orderNo;
+	private String version;
+	private String platform;
 
 	// Constructors
 
@@ -26,16 +28,26 @@ public class OrderSale implements java.io.Serializable {
 
 	/** full constructor */
 	public OrderSale(String sales, String shopName, Date saleTime,
-			String clientName, String goodsNum, String orderNo) {
+			String clientName, String goodsNum, String orderNo,String version,String platform) {
 		this.sales = sales;
 		this.shopName = shopName;
 		this.saleTime = saleTime;
 		this.clientName = clientName;
 		this.goodsNum = goodsNum;
 		this.orderNo = orderNo;
+		this.version = version;
+		this.platform = platform;
 	}
 
 	// Property accessors
+
+	public String getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(String platform) {
+		this.platform = platform;
+	}
 
 	public Integer getId() {
 		return this.id;
@@ -91,6 +103,14 @@ public class OrderSale implements java.io.Serializable {
 
 	public void setOrderNo(String orderNo) {
 		this.orderNo = orderNo;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
 	}
 
 }

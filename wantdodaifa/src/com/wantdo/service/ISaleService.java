@@ -16,7 +16,7 @@ public interface ISaleService {
 	
 	public List<Sale> findbyTimeAndName(Date saleTime,String shopName);
 
-	public List<Sale> getByOpDate(String startTime, String endTime) throws Exception;
+	public List getByOpDate(String startTime, String endTime) throws Exception;
 
 	public List getByOpDayDate(String startTime, String endTime) throws Exception;
 }

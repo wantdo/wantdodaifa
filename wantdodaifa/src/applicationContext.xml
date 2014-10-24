@@ -23,7 +23,7 @@
 				<prop key="hibernate.dialect">
 					org.hibernate.dialect.SQLServerDialect
 				</prop>
-				<!-- <prop key="hibernate.show_sql">true</prop> -->
+				 <!-- <prop key="hibernate.show_sql">true</prop>  -->
 			</props>
 		</property>
 		<property name="mappingResources">
@@ -37,7 +37,8 @@
 				<value>com/wantdo/pojo/CusShops.hbm.xml</value>
 				<value>com/wantdo/pojo/WspShops.hbm.xml</value>
 				<value>com/wantdo/pojo/OrderSale.hbm.xml</value>
-				<value>com/wantdo/pojo/HotGoodsRank.hbm.xml</value></list>
+				<value>com/wantdo/pojo/HotGoodsRank.hbm.xml</value>
+				<value>com/wantdo/pojo/TShopReflect.hbm.xml</value></list>
 		</property></bean>
 	<bean id="OrderJdDAO" class="com.wantdo.dao.impl.OrderJdDAO">
 		<property name="sessionFactory">
@@ -123,6 +124,11 @@
 	<bean id="OrderSaleAction" class="com.wantdo.action.OrderSaleAction" scope="prototype">
 		<property name="orderSaleService">
 			<ref bean="OrderSaleService"/>
+		</property> 
+	</bean>
+	<bean id="ShopNameManageAction" class="com.wantdo.action.ShopNameManageAction" scope="prototype">
+		<property name="tShopReflectService">
+			<ref bean="TShopReflectService"/>
 		</property> 
 	</bean>
 	<bean id="JDDFAction" class="com.wantdo.action.JDDFAction" scope="prototype">
@@ -248,5 +254,17 @@
 		class="com.wantdo.service.impl.WspShopsService">
 		<property name="wspShopsDAO">
 			<ref bean="WspShopsDAO" />
+		</property>
+	</bean>
+	<bean id="TShopReflectService"	
+		class="com.wantdo.service.impl.TShopReflectService">
+		<property name="tShopReflectDAO">
+			<ref bean="TShopReflectDAO" />
+		</property>
+	</bean>
+	<bean id="TShopReflectDAO"
+		class="com.wantdo.dao.impl.TShopReflectDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
 		</property>
 	</bean></beans>

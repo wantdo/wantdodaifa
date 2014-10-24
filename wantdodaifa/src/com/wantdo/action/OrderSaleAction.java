@@ -59,6 +59,24 @@ public class OrderSaleAction extends ActionSupport{
 				}
 				
 			}
+			if(variable.contains("clientNamepost")){
+				
+				orderSaleList = orderSaleService.getData(saleJson);
+				
+				for(OrderSale os : orderSaleList) {
+					if(!"undefined".equals(os.getClientName()) && os.getClientName() !=null && os.getClientName() !="--" && os.getClientName() !="--"){
+						String orderNo = os.getOrderNo();
+						List<OrderSale> osList = orderSaleService.findbyOrderNo(orderNo);
+						for(OrderSale ors : osList){
+							ors.setClientName(os.getClientName());
+							orderSaleService.update(ors);
+						}
+					}else{
+						return "error";
+					}
+				}
+				
+			}
 		
 			return SUCCESS;
 		}

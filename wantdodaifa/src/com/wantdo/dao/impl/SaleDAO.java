@@ -200,12 +200,11 @@ public class SaleDAO extends HibernateDaoSupport implements ISaleDAO{
 		}
 	}
 	
-	public List<Sale> getByOpDate(String startTime, String endTime) throws Exception {
+	public List getByOpDate(String startTime, String endTime) throws Exception {
 		log.debug("finding Sale instance with startTime: " + startTime+" and endTime:"+endTime);
 		try {
 			SimpleDateFormat sdf=new SimpleDateFormat("yy-MM-dd");
-			String queryString="from Sale as model where model.saleTime " +
-					"between ? and ? order by model.saleTime asc";
+			String queryString="SELECT platform,shopName,SUM (CAST(sales AS float)) AS sumSales,COUNT (*) AS orderNum,SUM (CAST(goodsNum AS float)) AS sumGoodsnum,SUM (CAST(sales AS float)) / COUNT (*) AS clientprice FROM OrderSale WHERE saleTime BETWEEN ? AND ? GROUP BY shopName,platform  ORDER BY SUM (CAST(sales AS float)) desc"; 
 			return getHibernateTemplate().find(queryString, new Object[]{sdf.parse(startTime),sdf.parse(endTime)});
 		} catch (RuntimeException re) {
 			// TODO: handle exception

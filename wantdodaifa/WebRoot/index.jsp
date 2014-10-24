@@ -136,6 +136,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <!--  <div class="alert alert-success" role="alert">请拖动以下"淘宝代发"到收藏栏<br>
 		<a id="collectbtn-drag" class="collectbtn" href="javascript:void((function(){var%20d=document,e=d.createElement('script');e.setAttribute('charset','utf-8');e.setAttribute('src','http://localhost:8080/wantdodaifa/js/d.js');d.body.appendChild(e);})());">一键抓取</a>
 		</div> -->
-	
+	<div class="alert alert-success" role="alert">
+		<a id="collectbtn-drag" class="collectbtn" href="<%=basePath%>ShopNameManageAction.action?variable=init">店铺名称管理</a>
+	</div>
   </body>
 </html>

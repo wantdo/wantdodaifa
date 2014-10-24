@@ -28,5 +28,11 @@
         <property name="orderNo" type="java.lang.String">
             <column name="orderNo" />
         </property>
+        <property name="version" type="java.lang.String">
+            <column name="version" />
+        </property>
+        <property name="platform" type="java.lang.String">
+            <column name="platform" />
+        </property>
     </class>
 </hibernate-mapping>

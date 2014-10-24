@@ -188,7 +188,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <div style="padding: 20px">
 	<table class="table table-bordered">
 		<caption align="top" style="font-size: x-large;">流量来源表</caption>  
-		<thead><tr style="background-color:yellow;"><td>店铺名称</td><td>平台</td><td>流量来源</td><td>到达页浏览量</td><td>到达页浏览量占比</td><td>浏览量</td><td>浏览量占比</td><td>数据日期</td><td>操作时间</td></tr></thead>
+		<thead><tr style="background-color:yellow;"><td>店铺名称</td><td>平台</td><td>流量来源</td><td>到达页浏览量</td><td>到达页浏览量占比</td><td>浏览量</td><td>浏览量占比</td><td>数据日期</td><td>操作时间</td><td>备注</td></tr></thead>
  	 	<s:iterator value="flowSourceList" id="flowSourceList" >
 	 		<tr style="background-color:threedface;">
 	 			<td><s:property value="#flowSourceList.shopName"/></td>
@@ -200,6 +200,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 			<td><s:property value="#flowSourceList.pageViewAccounted"/></td>
 	 			<td><s:property value="#flowSourceList.flowSourceTime"/></td>
 	 			<td><s:property value="#flowSourceList.nowTime"/></td>
+	 			<td><s:property value="#flowSourceList.remark"/></td>
 	 		</tr>
 		</s:iterator>
 	</table>

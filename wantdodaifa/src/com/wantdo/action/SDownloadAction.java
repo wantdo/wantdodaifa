@@ -20,7 +20,7 @@ import com.wantdo.utils.ExcelUtil;
 public class SDownloadAction extends ActionSupport {
 	
 	private static String[] excelHeader={
-		"序号","店铺名称","平台","销售额","下单数量","下单商品数","下单客户数","客单价","数据日期","操作时间"
+		"序号","店铺名称","平台","销售额","下单数量","下单商品数","下单客户数","客单价","数据日期"
 	};
 	private String startTime;
 	private String endTime;
@@ -57,30 +57,72 @@ public class SDownloadAction extends ActionSupport {
 			endBuffer.insert(2, "-");
 			endBuffer.insert(5, "-");
 		}
-		List<Sale> salelist=saleService.getByOpDate(startBuffer.toString(), endBuffer.toString());
+		List<Object[]> salelist=saleService.getByOpDate(startBuffer.toString(), endBuffer.toString());
 		SimpleDateFormat sdFormat=new SimpleDateFormat("yy-MM-dd");
 		boolean isBreak=false;
 		if (salelist!=null) {
 			for(int i=0;i<salelist.size();++i){
 				if (i==0) {
-					List<Sale> cusList=new ArrayList<Sale>();
-					cusList.add(salelist.get(0));
-					saleMap.put(sdFormat.format(salelist.get(0).getSaleTime()), cusList);
+
+					double clientPrice = Double.parseDouble(salelist.get(0)[5].toString());
+					int temp2 = (int)Math.round(clientPrice * 100); //小数点后两位前移，并四舍五入 
+					clientPrice = (double)temp2 / 100.00; //还原小数点后两位
+					
+					List<Sale> cList=new ArrayList<Sale>();
+					Sale s = new Sale();
+					s.setShopName(salelist.get(0)[0].toString());
+					s.setPlatform(salelist.get(0)[1].toString());
+					s.setSales(salelist.get(0)[2].toString());
+					s.setOrderQuantity(salelist.get(0)[3].toString());
+					s.setOrderGoodsNum(salelist.get(0)[4].toString().substring(0,salelist.get(0)[4].toString().length()-2));
+					s.setOrderClientNum(salelist.get(0)[3].toString());
+					s.setClientPrice(String.valueOf(clientPrice));
+					s.setVersion(startBuffer.toString()+"至"+endBuffer.toString());
+					cList.add(s);
+					saleMap.put(endBuffer.toString(), cList);
 				}else {
 					isBreak=false;
-					String operatedate=sdFormat.format(salelist.get(i).getSaleTime());
+					String operatedate=endBuffer.toString();
 					for(Entry<String, List<Sale>> entry:saleMap.entrySet()){
 						if (operatedate.equals(entry.getKey())) {
+							
+							double clientPrice = Double.parseDouble(salelist.get(i)[5].toString());
+							int temp2 = (int)Math.round(clientPrice * 100); //小数点后两位前移，并四舍五入 
+							clientPrice = (double)temp2 / 100.00; //还原小数点后两位
+							
 							List<Sale> cList=entry.getValue();
-							cList.add(salelist.get(i));
+							Sale s = new Sale();
+							s.setShopName(salelist.get(i)[0].toString());
+							s.setPlatform(salelist.get(i)[1].toString());
+							s.setSales(salelist.get(i)[2].toString());
+							s.setOrderQuantity(salelist.get(i)[3].toString());
+							s.setOrderGoodsNum(salelist.get(i)[4].toString().substring(0,salelist.get(i)[4].toString().length()-2));
+							s.setOrderClientNum(salelist.get(i)[3].toString());
+							s.setClientPrice(String.valueOf(clientPrice));
+							s.setVersion(startBuffer.toString()+"至"+endBuffer.toString());
+							cList.add(s);
 							saleMap.put(operatedate, cList);
 							isBreak=true;
 							break;
 						}
 					}
 					if (isBreak==false) {
+
+						double clientPrice = Double.parseDouble(salelist.get(i)[5].toString());
+						int temp2 = (int)Math.round(clientPrice * 100); //小数点后两位前移，并四舍五入 
+						clientPrice = (double)temp2 / 100.00; //还原小数点后两位
+						
 						List<Sale> cList=new ArrayList<Sale>();
-						cList.add(salelist.get(i));
+						Sale s = new Sale();
+						s.setShopName(salelist.get(i)[0].toString());
+						s.setPlatform(salelist.get(i)[1].toString());
+						s.setSales(salelist.get(i)[2].toString());
+						s.setOrderQuantity(salelist.get(i)[3].toString());
+						s.setOrderGoodsNum(salelist.get(i)[4].toString().substring(0,salelist.get(i)[4].toString().length()-2));
+						s.setOrderClientNum(salelist.get(i)[3].toString());
+						s.setClientPrice(String.valueOf(clientPrice));
+						s.setVersion(startBuffer.toString()+"至"+endBuffer.toString());
+						cList.add(s);
 						saleMap.put(operatedate, cList);
 					}
 				}
@@ -100,7 +142,7 @@ public class SDownloadAction extends ActionSupport {
 						saleList.get(0).getPlatform(),saleList.get(0).getSales(),
 						saleList.get(0).getOrderQuantity(),saleList.get(0).getOrderGoodsNum(),
 						saleList.get(0).getOrderClientNum(),saleList.get(0).getClientPrice(),
-						sdf1.format(saleList.get(0).getSaleTime()),sdf2.format(saleList.get(0).getNowTime())
+						saleList.get(0).getVersion()
 					};
 					++index;
 					list.add(strArr);
@@ -110,7 +152,7 @@ public class SDownloadAction extends ActionSupport {
 							saleList.get(i).getPlatform(),saleList.get(i).getSales(),
 							saleList.get(i).getOrderQuantity(),saleList.get(i).getOrderGoodsNum(),
 							saleList.get(i).getOrderClientNum(),saleList.get(i).getClientPrice(),
-							sdf1.format(saleList.get(i).getSaleTime()),sdf2.format(saleList.get(i).getNowTime())
+							saleList.get(i).getVersion()
 						};
 					++index;
 					list.add(strArr);

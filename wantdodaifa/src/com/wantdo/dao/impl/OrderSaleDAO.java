@@ -32,6 +32,8 @@ public class OrderSaleDAO extends HibernateDaoSupport implements IOrderSaleDAO{
 	public static final String CLIENT_NAME = "clientName";
 	public static final String GOODS_NUM = "goodsNum";
 	public static final String ORDER_NO = "orderNo";
+	public static final String VERSION = "version";
+	public static final String PLATFORM = "platform";
 
 	protected void initDao() {
 		// do nothing
@@ -116,7 +118,15 @@ public class OrderSaleDAO extends HibernateDaoSupport implements IOrderSaleDAO{
 	public List findByOrderNo(Object orderNo) {
 		return findByProperty(ORDER_NO, orderNo);
 	}
+	
+	public List findByVersion(Object version) {
+		return findByProperty(VERSION, version);
+	}
 
+	public List findByPlatform(Object platform) {
+		return findByProperty(PLATFORM, platform);
+	}
+	
 	public List findAll() {
 		log.debug("finding all OrderSale instances");
 		try {
@@ -176,7 +186,7 @@ public class OrderSaleDAO extends HibernateDaoSupport implements IOrderSaleDAO{
 	public List<OrderSale> findbyTimeAndName(Date saleTime, String shopName) {
 		log.debug("finding all OrderSale instances");
 		try {
-			String queryString = "from OrderSale as os where os.saleTime=? and ? like os.shopName+'%'";
+			String queryString = "from OrderSale as os where os.saleTime=? and ? like os.shopName+'%' and os.clientName <> ''";
 			return getHibernateTemplate().find(queryString,new Object[]{saleTime,shopName});
 		} catch (RuntimeException re) {
 			log.error("find all failed", re);
@@ -189,7 +199,7 @@ public class OrderSaleDAO extends HibernateDaoSupport implements IOrderSaleDAO{
 			String shopName) {
 		log.debug("finding all OrderSale instances");
 		try {
-			String queryString = "select DISTINCT os.clientName from OrderSale as os where os.saleTime=? and ? like os.shopName+'%'";
+			String queryString = "select DISTINCT os.clientName from OrderSale as os where os.saleTime=? and ? like os.shopName+'%' and os.clientName <> ''";
 			return getHibernateTemplate().find(queryString,new Object[]{saleTime,shopName});
 			
 		} catch (RuntimeException re) {

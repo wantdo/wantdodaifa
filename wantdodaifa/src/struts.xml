@@ -11,6 +11,10 @@
 			<result>/WEB-INF/capture/zqInfo.jsp</result>
 			<result name="error">/WEB-INF/capture/zqerror.jsp</result>
 		</action>
+		<action name="ShopNameManageAction" class="ShopNameManageAction">
+			<result>/WEB-INF/sync/syncShopName.jsp</result>
+			<result name="error">/WEB-INF/capture/zqerror.jsp</result>
+		</action>
 		<action name="OrderSaleAction" class="OrderSaleAction">
 			<!-- <interceptor-ref name="defaultStack">
 			</interceptor-ref> -->

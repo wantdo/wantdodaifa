@@ -43,7 +43,7 @@ public class SaleService implements ISaleService{
 	}
 
 	@Override
-	public List<Sale> getByOpDate(String startTime, String endTime)
+	public List getByOpDate(String startTime, String endTime)
 			throws Exception {
 		// TODO Auto-generated method stub
 		return saleDAO.getByOpDate(startTime, endTime);

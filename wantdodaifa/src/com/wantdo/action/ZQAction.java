@@ -99,7 +99,6 @@ public class ZQAction extends ActionSupport{
 								
 								if(sList.size() == 0){
 									saleService.save(s);
-									return SUCCESS;
 								}else{
 									for(Sale sa : sList){
 										sa.setSales(sales);
@@ -276,7 +275,7 @@ public class ZQAction extends ActionSupport{
 					if(!hotInfo.equals("") && hotInfo != null){
 						
 						hotInfo = hotInfo.replaceAll("\\*","%");
-						System.out.println(hotInfo);
+//						System.out.println(hotInfo);
 						hotGoodsRankList = hotGoodsRankService.getData(hotInfo);
 						for(HotGoodsRank h : hotGoodsRankList) {
 							if(!"undefined".equals(h.getPrice()) && h.getPrice() != null){
@@ -314,6 +313,29 @@ public class ZQAction extends ActionSupport{
 							}
 						}
 					}
+				}
+
+				if(variable.equals("jdhotGoodsDetailpost")){
+					if(!hotInfo.equals("") && hotInfo != null){
+						
+//						System.out.println(hotInfo);
+						hotGoodsRankList = hotGoodsRankService.getData(hotInfo);
+						for(HotGoodsRank h : hotGoodsRankList) {
+							if(!"undefined".equals(h.getSign()) && h.getSign() != null){
+								Date captureDate = h.getCaptureDate();
+								String goodsUrl = h.getGoodsUrl();
+								List<HotGoodsRank> hgrList = hotGoodsRankService.findbyURL(goodsUrl,captureDate);
+									for(HotGoodsRank hgr : hgrList){
+										hgr.setSign(h.getSign());
+										hotGoodsRankService.update(hgr);
+									}
+							}else{
+								return "error";
+							}
+						}
+					}
+				
+					
 				}
 				}
 			//当当
@@ -364,7 +386,6 @@ public class ZQAction extends ActionSupport{
 								
 								if(sList.size() == 0){
 									saleService.save(s);
-									return SUCCESS;
 								}else{
 									for(Sale sa : sList){
 										sa.setSales(sales);
@@ -544,7 +565,6 @@ public class ZQAction extends ActionSupport{
 								
 								if(sList.size() == 0){
 									saleService.save(s);
-									return SUCCESS;
 								}else{
 									for(Sale sa : sList){
 										sa.setSales(sales);
@@ -827,7 +847,6 @@ public class ZQAction extends ActionSupport{
 								
 								if(sList.size() == 0){
 									saleService.save(s);
-									return SUCCESS;
 								}else{
 									for(Sale sa : sList){
 										sa.setSales(sales);

@@ -40,5 +40,8 @@
         <property name="version" type="java.lang.String">
             <column name="version" length="50" />
         </property>
+        <property name="remark" type="java.lang.String">
+            <column name="remark" length="50" />
+        </property>
     </class>
 </hibernate-mapping>
