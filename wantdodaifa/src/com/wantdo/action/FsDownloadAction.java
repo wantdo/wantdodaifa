@@ -24,7 +24,7 @@ import com.wantdo.utils.ExcelUtil;
 public class FsDownloadAction extends ActionSupport {
 	
 	private static String[] excelHeader={
-		"序号","店铺名称","平台","流量来源","到达页浏览量","到达页浏览量占比","浏览量","浏览量占比","数据日期","操作时间"
+		"序号","店铺名称","平台","流量来源","到达页浏览量","到达页浏览量占比","浏览量","浏览量占比","数据日期","操作时间","备注"
 	};
 	private String startTime;
 	private String endTime;
@@ -102,7 +102,8 @@ public class FsDownloadAction extends ActionSupport {
 						flowSourceList.get(0).getPlatform(),flowSourceList.get(0).getFlowSource(),
 						flowSourceList.get(0).getLandPageView(),flowSourceList.get(0).getLandPageViewAccounted(),
 						flowSourceList.get(0).getPageView(),flowSourceList.get(0).getPageViewAccounted(),
-						sdf1.format(flowSourceList.get(0).getFlowSourceTime()),sdf2.format(flowSourceList.get(0).getNowTime())
+						sdf1.format(flowSourceList.get(0).getFlowSourceTime()),sdf2.format(flowSourceList.get(0).getNowTime()),
+						flowSourceList.get(0).getRemark()
 					};
 					++index;
 					fslist.add(strArr);
@@ -112,7 +113,8 @@ public class FsDownloadAction extends ActionSupport {
 							flowSourceList.get(i).getPlatform(),flowSourceList.get(i).getFlowSource(),
 							flowSourceList.get(i).getLandPageView(),flowSourceList.get(i).getLandPageViewAccounted(),
 							flowSourceList.get(i).getPageView(),flowSourceList.get(i).getPageViewAccounted(),
-							sdf1.format(flowSourceList.get(i).getFlowSourceTime()),sdf2.format(flowSourceList.get(i).getNowTime())
+							sdf1.format(flowSourceList.get(i).getFlowSourceTime()),sdf2.format(flowSourceList.get(i).getNowTime()),
+							flowSourceList.get(i).getRemark()
 						};
 					++index;
 					fslist.add(strArr);

@@ -13,7 +13,7 @@ import com.wantdo.service.IFlowSourceService;
 
 public class FsProcessedAction extends ActionSupport {
 	
-	private String[] strArray={"店铺名","平台","流量来源","到达页浏览量","到达页浏览量占比","浏览量","浏览量占比","数据日期","操作时间"};
+	private String[] strArray={"店铺名","平台","流量来源","到达页浏览量","到达页浏览量占比","浏览量","浏览量占比","数据日期","操作时间","备注"};
 	
 	private String startTime;
 	private String endTime;

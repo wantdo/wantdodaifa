@@ -59,6 +59,7 @@ public class ZQAction extends ActionSupport{
 						
 	//					System.out.println(xiaoliang);
 						saleList = saleService.getData(xiaoliang);
+						if(saleList.get(0).getVersion().equals("1.1.5")){
 						for(Sale s : saleList) {
 							if(!"undefined".equals(s.getSales()) && s.getSales() !=null && s.getSales() !="--" && s.getSales() !="--"){
 								Date saleTime = s.getSaleTime();
@@ -113,7 +114,9 @@ public class ZQAction extends ActionSupport{
 							}else{
 							return "error";
 						}
-					
+						}
+						}else{
+							return "pluginerror";
 						}
 					}
 					//======================================================京东流量=======================================================
@@ -124,6 +127,7 @@ public class ZQAction extends ActionSupport{
 	//				System.out.println(liuliang);
 						
 						flowList = flowService.getData(liuliang);
+						if(flowList.get(0).getVersion().equals("1.1.5")){
 						for(Flow f : flowList) {
 							if(!"undefined".equals(f.getShopDealRate()) && f.getShopDealRate() != null && f.getShopDealRate() != "--"){
 								Date flowTime = f.getFlowTime();
@@ -149,6 +153,9 @@ public class ZQAction extends ActionSupport{
 								return "error";
 							}
 						}
+						}else{
+							return "pluginerror";
+						}
 					}
 					//======================================================京东实时销量=======================================================
 					if(!zhibiao.equals("") && zhibiao != null){
@@ -156,6 +163,7 @@ public class ZQAction extends ActionSupport{
 	//					System.out.println(zhibiao);
 						
 						timeSaleList = timeSaleService.getData(zhibiao);
+						if(timeSaleList.get(0).getVersion().equals("1.1.5")){
 						for(TimeSale t : timeSaleList) {
 							if(!"undefined".equals(t.getSales()) && t.getSales() !=null && t.getSales() !="--"){
 								String times = t.getTimes();
@@ -182,6 +190,9 @@ public class ZQAction extends ActionSupport{
 								return "error";
 							}
 						}
+						}else{
+							return "pluginerror";
+						}
 					}
 					//======================================================京东上架=======================================================
 					if(!shangjia.equals("") && shangjia != null){
@@ -189,6 +200,7 @@ public class ZQAction extends ActionSupport{
 	//					System.out.println(shangjia);
 						
 						goodsList = goodsService.getData(shangjia);
+						if(goodsList.get(0).getVersion().equals("1.1.5")){
 						for(Goods g : goodsList) {
 							if(!"undefined".equals(g.getSku()) && g.getSku() != null && g.getSku() !="--"){
 								Date goodsTime = g.getGoodsTime();
@@ -200,14 +212,17 @@ public class ZQAction extends ActionSupport{
 							}else{
 								return "error";
 							}
-						}
 					}
+						} else
+							return "pluginerror";
+						}
 				}
 				if(variable.equals("jdflowSourcepost")){
 				//======================================================京东流量来源=======================================================
 					if(!laiyuan.equals("") && laiyuan != null){
 						laiyuan = laiyuan.replaceAll("\\*","%");
 						flowSourceList = flowSourceService.getData(laiyuan);
+						if(flowSourceList.get(0).getVersion().equals("1.1.5")){
 						for(FlowSource fs : flowSourceList) {
 							if(!"undefined".equals(fs.getFlowSource()) && fs.getFlowSource() !=null && fs.getFlowSource() != "--"){
 								String flowSource = fs.getFlowSource();
@@ -234,6 +249,9 @@ public class ZQAction extends ActionSupport{
 								return "error";
 							}
 						}
+						}else{
+							return "pluginerror";
+						}
 					}
 				}
 				if(variable.equals("jdflowpost")){
@@ -247,6 +265,7 @@ public class ZQAction extends ActionSupport{
 							
 							
 							flowList = flowService.getData(flowInfo);
+							if(flowList.get(0).getVersion().equals("1.1.5")){
 							for(Flow f : flowList) {
 								if(!"undefined".equals(f.getPageviews()) && f.getPageviews() != null && f.getPageviews() != "--"){
 									Date flowTime = f.getFlowTime();
@@ -267,6 +286,9 @@ public class ZQAction extends ActionSupport{
 									return "error";
 								}
 							}
+							}else{
+								return "pluginerror";
+							}
 						}
 					}
 				}
@@ -277,6 +299,7 @@ public class ZQAction extends ActionSupport{
 						hotInfo = hotInfo.replaceAll("\\*","%");
 //						System.out.println(hotInfo);
 						hotGoodsRankList = hotGoodsRankService.getData(hotInfo);
+						if(hotGoodsRankList.get(0).getVersion().equals("1.1.5")){
 						for(HotGoodsRank h : hotGoodsRankList) {
 							if(!"undefined".equals(h.getPrice()) && h.getPrice() != null){
 								Date captureDate = h.getCaptureDate();
@@ -312,6 +335,9 @@ public class ZQAction extends ActionSupport{
 								return "error";
 							}
 						}
+						}else{
+							return "pluginerror";
+						}
 					}
 				}
 
@@ -320,6 +346,7 @@ public class ZQAction extends ActionSupport{
 						
 //						System.out.println(hotInfo);
 						hotGoodsRankList = hotGoodsRankService.getData(hotInfo);
+						if(hotGoodsRankList.get(0).getVersion().equals("1.1.5")){
 						for(HotGoodsRank h : hotGoodsRankList) {
 							if(!"undefined".equals(h.getSign()) && h.getSign() != null){
 								Date captureDate = h.getCaptureDate();
@@ -332,6 +359,9 @@ public class ZQAction extends ActionSupport{
 							}else{
 								return "error";
 							}
+						}
+						}else{
+							return "pluginerror";
 						}
 					}
 				
@@ -346,6 +376,7 @@ public class ZQAction extends ActionSupport{
 						
 		//					System.out.println(xiaoliang);
 						saleList = saleService.getData(xiaoliang);
+						if(saleList.get(0).getVersion().equals("1.1.5")){
 						for(Sale s : saleList) {
 							if(!"undefined".equals(s.getSales()) && s.getSales() !=null && s.getSales() !="--" && s.getSales() !="--"){
 								Date saleTime = s.getSaleTime();
@@ -399,8 +430,10 @@ public class ZQAction extends ActionSupport{
 								}
 							}else{
 							return "error";
+							}
 						}
-					
+						}else{
+							return "pluginerror";
 						}
 					}
 				
@@ -412,6 +445,7 @@ public class ZQAction extends ActionSupport{
 	//				System.out.println(liuliang);
 						
 						flowList = flowService.getData(liuliang);
+						if(flowList.get(0).getVersion().equals("1.1.5")){
 						for(Flow f : flowList) {
 							if(!"undefined".equals(f.getPageviews()) && f.getPageviews() != null && f.getPageviews() != "--"){
 								Date flowTime = f.getFlowTime();
@@ -442,6 +476,9 @@ public class ZQAction extends ActionSupport{
 								return "error";
 							}
 						}
+						}else{
+							return "pluginerror";
+						}
 					}
 				
 				}
@@ -452,6 +489,7 @@ public class ZQAction extends ActionSupport{
 	//					System.out.println(zhibiao);
 						
 						timeSaleList = timeSaleService.getData(zhibiao);
+						if(timeSaleList.get(0).getVersion().equals("1.1.5")){
 						for(TimeSale t : timeSaleList) {
 							if(!"undefined".equals(t.getVisitors()) && t.getVisitors() !=null && t.getVisitors() !="--"){
 								String times = t.getTimes();
@@ -480,6 +518,9 @@ public class ZQAction extends ActionSupport{
 								return "error";
 							}
 						}
+						}else{
+							return "pluginerror";
+						}
 					}
 				}
 				if(variable.equals("ddflowSourcepost")){
@@ -488,6 +529,7 @@ public class ZQAction extends ActionSupport{
 	//						System.out.println(laiyuan);
 						laiyuan = laiyuan.replaceAll("\\*","%");
 						flowSourceList = flowSourceService.getData(laiyuan);
+						if(flowSourceList.get(0).getVersion().equals("1.1.5")){
 						for(FlowSource fs : flowSourceList) {
 							if(!"undefined".equals(fs.getFlowSource()) && fs.getFlowSource() !=null && fs.getFlowSource() != "--"){
 								String flowSource = fs.getFlowSource();
@@ -513,6 +555,9 @@ public class ZQAction extends ActionSupport{
 								return "error";
 							}
 						}
+						}else{
+							return "pluginerror";
+						}
 					}
 				}
 			}
@@ -525,6 +570,7 @@ public class ZQAction extends ActionSupport{
 	//					System.out.println(xiaoliang);
 						
 						saleList = saleService.getData(xiaoliang);
+						if(saleList.get(0).getVersion().equals("1.1.5")){
 						for(Sale s : saleList) {
 							if(!"undefined".equals(s.getSales()) && s.getSales() !=null && s.getSales() !="--" && s.getSales() !="--"){
 								Date saleTime = s.getSaleTime();
@@ -579,7 +625,9 @@ public class ZQAction extends ActionSupport{
 							}else{
 								return "error";
 							}
-						
+						}
+						}else{
+							return "pluginerror";
 						}
 					}
 				}
@@ -592,6 +640,7 @@ public class ZQAction extends ActionSupport{
 		//			System.out.println(liuliang);
 						
 						flowList = flowService.getData(liuliang);
+						if(flowList.get(0).getVersion().equals("1.1.5")){
 						for(Flow f : flowList) {
 							if(!"undefined".equals(f.getPageviews()) && f.getPageviews() != null && f.getPageviews() != "--"){
 								Date flowTime = f.getFlowTime();
@@ -622,6 +671,9 @@ public class ZQAction extends ActionSupport{
 								return "error";
 							}
 						}
+						}else{
+							return "pluginerror";
+						}
 					}
 				}
 
@@ -633,6 +685,7 @@ public class ZQAction extends ActionSupport{
 	//					System.out.println(zhibiao);
 						
 						timeSaleList = timeSaleService.getData(zhibiao);
+						if(timeSaleList.get(0).getVersion().equals("1.1.5")){
 						for(TimeSale t : timeSaleList) {
 							if(!"undefined".equals(t.getVisitors()) && t.getVisitors() !=null && t.getVisitors() !="--"){
 								String times = t.getTimes();
@@ -661,6 +714,9 @@ public class ZQAction extends ActionSupport{
 								return "error";
 							}
 						}
+						}else{
+							return "pluginerror";
+						}
 					}
 				}
 			}
@@ -674,6 +730,7 @@ public class ZQAction extends ActionSupport{
 	//					System.out.println(xiaoliang);
 						
 						saleList = saleService.getData(xiaoliang);
+						if(saleList.get(0).getVersion().equals("1.1.5")){
 						for(Sale s : saleList) {
 							if(!"undefined".equals(s.getSales()) && s.getSales() !=null && s.getSales() !="--"){
 								Date saleTime = s.getSaleTime();
@@ -696,6 +753,9 @@ public class ZQAction extends ActionSupport{
 								return "error";
 							}
 						}
+						}else{
+							return "pluginerror";
+						}
 					}
 					//======================================================淘宝流量=======================================================
 	
@@ -706,6 +766,7 @@ public class ZQAction extends ActionSupport{
 	//				System.out.println(liuliang);
 						
 						flowList = flowService.getData(liuliang);
+						if(flowList.get(0).getVersion().equals("1.1.5")){
 						for(Flow f : flowList) {
 							if(!"undefined".equals(f.getPageviews()) && f.getPageviews() != null && f.getPageviews() != "--"){
 								Date flowTime = f.getFlowTime();
@@ -735,6 +796,9 @@ public class ZQAction extends ActionSupport{
 								return "error";
 							}
 						}
+						}else{
+							return "pluginerror";
+						}
 					}
 				}
 				if(variable.equals("tbtmsalespost")){
@@ -745,6 +809,7 @@ public class ZQAction extends ActionSupport{
 						//					System.out.println(xiaoliang);
 						
 						saleList = saleService.getData(xiaoliang);
+						if(saleList.get(0).getVersion().equals("1.1.5")){
 						for(Sale s : saleList) {
 							if(!"undefined".equals(s.getSales()) && s.getSales() !=null && s.getSales() !="--"){
 								Date saleTime = s.getSaleTime();
@@ -764,6 +829,9 @@ public class ZQAction extends ActionSupport{
 								return "error";
 							}
 						}
+						}else{
+							return "pluginerror";
+						}
 					}
 					
 				}
@@ -779,6 +847,7 @@ public class ZQAction extends ActionSupport{
 							
 							
 							flowList = flowService.getData(flowInfo);
+							if(flowList.get(0).getVersion().equals("1.1.5")){
 							for(Flow f : flowList) {
 								if(!"undefined".equals(f.getAvgPaceTime()) && f.getAvgPaceTime() != null && f.getAvgPaceTime() != "--"){
 									Date flowTime = f.getFlowTime();
@@ -794,6 +863,9 @@ public class ZQAction extends ActionSupport{
 									return "error";
 								}
 							}
+							}else{
+								return "pluginerror";
+							}
 						}
 					}
 				}
@@ -807,6 +879,7 @@ public class ZQAction extends ActionSupport{
 						
 //						System.out.println(xiaoliang);
 						saleList = saleService.getData(xiaoliang);
+						if(saleList.get(0).getVersion().equals("1.1.5")){
 						for(Sale s : saleList) {
 							if(!"undefined".equals(s.getSales()) && s.getSales() !=null && s.getSales() !="--" && s.getSales() !="--"){
 								Date saleTime = s.getSaleTime();
@@ -861,6 +934,9 @@ public class ZQAction extends ActionSupport{
 							}else{
 								return "error";
 							}
+						}
+						}else{
+							return "pluginerror";
 						}
 					}
 				}

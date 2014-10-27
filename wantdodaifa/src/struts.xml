@@ -10,6 +10,7 @@
 			</interceptor-ref> -->
 			<result>/WEB-INF/capture/zqInfo.jsp</result>
 			<result name="error">/WEB-INF/capture/zqerror.jsp</result>
+			<result name="pluginerror">/WEB-INF/capture/pluginerror.jsp</result>
 		</action>
 		<action name="ShopNameManageAction" class="ShopNameManageAction">
 			<result>/WEB-INF/sync/syncShopName.jsp</result>
@@ -20,6 +21,7 @@
 			</interceptor-ref> -->
 			<result>/WEB-INF/capture/zqInfo.jsp</result>
 			<result name="error">/WEB-INF/capture/zqerror.jsp</result>
+			<result name="pluginerror">/WEB-INF/capture/pluginerror.jsp</result>
 		</action>
 		<action name="JDDFAction" class="JDDFAction">
 			<!-- <interceptor-ref name="defaultStack">

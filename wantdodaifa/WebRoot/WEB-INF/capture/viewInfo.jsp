@@ -28,7 +28,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
        setTimeout("self.close()",2000);
      } */
       function timeQuery(){
-		window.open("http://192.168.6.211/:8080/wantdodaifa/");
+		window.open("http://192.168.6.211:8080/wantdodaifa/");
 	  }
      function timeDownload(){
 			var startTime=document.getElementById("startTime").value.replace(/\-/g,"");
@@ -81,8 +81,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <s:iterator value="saleMap" id="list">
  	 	<s:iterator value="#list.value" id="saleList" >
 	 		<tr  style="background-color:threedface;">
-	 			<td><s:property value="#saleList.platform"/></td>
 	 			<td><s:property value="#saleList.shopName"/></td>
+	 			<td><s:property value="#saleList.platform"/></td>
 	 			<td><s:property value="#saleList.sales"/></td>
 	 			<td><s:property value="#saleList.orderQuantity"/></td>
 	 			<td><s:property value="#saleList.orderGoodsNum"/></td>
@@ -131,7 +131,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <div style="padding: 20px">
 	<table class="table table-bordered">
 		<caption align="top" style="font-size: x-large;">流量来源表</caption>  
-		<thead><tr style="background-color:yellow;"><td>店铺名称</td><td>平台</td><td>流量来源</td><td>到达页浏览量</td><td>到达页浏览量占比</td><td>浏览量</td><td>浏览量占比</td><td>数据日期</td><td>操作时间</td></tr></thead>
+		<thead><tr style="background-color:yellow;"><td>店铺名称</td><td>平台</td><td>流量来源</td><td>到达页浏览量</td><td>到达页浏览量占比</td><td>浏览量</td><td>浏览量占比</td><td>数据日期</td><td>操作时间</td><td>备注</td></tr></thead>
   <s:iterator value="flowSourceMap" id="list">
  	 	<s:iterator value="#list.value" id="flowSourceList" >
 	 		<tr style="background-color:threedface;">
@@ -142,8 +142,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 			<td><s:property value="#flowSourceList.landPageViewAccounted"/></td>
 	 			<td><s:property value="#flowSourceList.pageView"/></td>
 	 			<td><s:property value="#flowSourceList.pageViewAccounted"/></td>
-	 			<td><s:property value="#flowSourceList.remark"/></td>
+	 			<td><s:property value="#flowSourceList.flowSourceTime"/></td>
 	 			<td><s:property value="#flowSourceList.nowTime"/></td>
+	 			<td><s:property value="#flowSourceList.remark"/></td>
 	 		</tr>
 		</s:iterator>
   </s:iterator> 	

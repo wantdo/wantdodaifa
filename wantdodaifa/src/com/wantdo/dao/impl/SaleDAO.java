@@ -204,7 +204,7 @@ public class SaleDAO extends HibernateDaoSupport implements ISaleDAO{
 		log.debug("finding Sale instance with startTime: " + startTime+" and endTime:"+endTime);
 		try {
 			SimpleDateFormat sdf=new SimpleDateFormat("yy-MM-dd");
-			String queryString="SELECT platform,shopName,SUM (CAST(sales AS float)) AS sumSales,COUNT (*) AS orderNum,SUM (CAST(goodsNum AS float)) AS sumGoodsnum,SUM (CAST(sales AS float)) / COUNT (*) AS clientprice FROM OrderSale WHERE saleTime BETWEEN ? AND ? GROUP BY shopName,platform  ORDER BY SUM (CAST(sales AS float)) desc"; 
+			String queryString="SELECT shopName,platform,SUM (CAST(sales AS float)) AS sumSales,COUNT (*) AS orderNum,SUM (CAST(goodsNum AS float)) AS sumGoodsnum,SUM (CAST(sales AS float)) / COUNT (*) AS clientprice FROM OrderSale WHERE saleTime BETWEEN ? AND ? GROUP BY shopName,platform  ORDER BY SUM (CAST(sales AS float)) desc"; 
 			return getHibernateTemplate().find(queryString, new Object[]{sdf.parse(startTime),sdf.parse(endTime)});
 		} catch (RuntimeException re) {
 			// TODO: handle exception

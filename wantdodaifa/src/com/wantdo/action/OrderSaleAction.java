@@ -26,6 +26,7 @@ public class OrderSaleAction extends ActionSupport{
 					
 //					System.out.println(saleJson);
 					orderSaleList = orderSaleService.getData(saleJson);
+					if(orderSaleList.get(0).getVersion().equals("1.1.5")){
 					
 					for(OrderSale os : orderSaleList) {
 						String orderNo = os.getOrderNo();
@@ -38,11 +39,15 @@ public class OrderSaleAction extends ActionSupport{
 							return "error";
 						}
 					}
+					}else{
+						return "pluginerror";
+					}
 				}
 			}
 			if(variable.contains("shopNamepost")){
 
 				orderSaleList = orderSaleService.getData(saleData);
+				if(orderSaleList.get(0).getVersion().equals("1.1.5")){
 				
 				for(OrderSale os : orderSaleList) {
 					if(!"undefined".equals(os.getShopName()) && os.getShopName() !=null && os.getShopName() !="--" && os.getShopName() !="--"){
@@ -57,11 +62,15 @@ public class OrderSaleAction extends ActionSupport{
 						return "error";
 					}
 				}
+				}else{
+					return "pluginerror";
+				}
 				
 			}
 			if(variable.contains("clientNamepost")){
 				
 				orderSaleList = orderSaleService.getData(saleJson);
+				if(orderSaleList.get(0).getVersion().equals("1.1.5")){
 				
 				for(OrderSale os : orderSaleList) {
 					if(!"undefined".equals(os.getClientName()) && os.getClientName() !=null && os.getClientName() !="--" && os.getClientName() !="--"){
@@ -74,6 +83,9 @@ public class OrderSaleAction extends ActionSupport{
 					}else{
 						return "error";
 					}
+				}
+				}else{
+					return "pluginerror";
 				}
 				
 			}

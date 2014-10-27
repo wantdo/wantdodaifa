@@ -415,6 +415,8 @@ function daifaMode(b) {
 			var captureDate = strYear + "-" + strMonth + "-" + strDay;
 			
 			$("span:contains(京麦工作台)").parents("a").parents("li").before('<a class="btn print btnOver" id="capture"  style="background-position:0 -25px;color:white" href="#">抓取数据</a>');
+			$("#industryId_dropLevel1").val("1343");
+			$("#industryId_dropLevel2").val("1354");
 			
 			$("#capture").click(function() {
 				var hotInfo  = "[";
@@ -514,13 +516,12 @@ function daifaMode(b) {
 					$("#header").after("<form  id='hotpost' method='post' action='"+b+"/ZQAction.action'></form>");
 					$("#hotpost").append("<input type='hidden' name='hotInfo' value='"+hotInfo+"' />");
 					$("#hotpost").append("<input type='hidden' name='variable' id='variable' value='jdhotGoodspost' />");
-//					alert(hotInfo);
+					alert(hotInfo);
 					$("#hotProductTblXls").children("tbody").children("tr").each(function(){
 						var x = 0;
 						$(this).children("td").each(function(){
 							if(x==2){
 //								window.open($(this).children("label").children("a").attr("href"), "_blank");
-								alert($(this).children("label").children("a").attr("href"));
 							}
 							x++;
 						});
@@ -564,22 +565,6 @@ function daifaMode(b) {
 				urlJson +="\"goodsName\":\"" + goodsName + "\"," 
 				urlJson +="\"captureDate\":\"" + captureDate+"\"}]";
 //			$.post(b + "/ZQAction",{hotInfo:urlJson,variable:"jdhotGoodsDetailpost"},function(){});
-//			window.setTimeout(function b(){window.close();},1000);
-				window.open("http://www.baidu.com","_self").close();
-//				window.open("","_self").close();
-//				window.open("","_top").close();
-//			        if(confirm("确定要退出吗？")){
-//			                 var browserName=navigator.appName;
-//			                 if (browserName=="Netscape"){
-//			                       window.open('', '_self', '');
-//			                       window.close();
-//			                 }
-//			                 if (browserName=="Microsoft Internet Explorer") {
-//			                       window.parent.opener = "whocares";
-//			                       window.parent.close();
-//			                 }
-//			        }
-//				window.parent.close();
 			},2000);
 		}else{
 			window.location.reload();
